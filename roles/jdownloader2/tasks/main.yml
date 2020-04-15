@@ -29,18 +29,18 @@
 
 - name: Create jdownloader2 directories
   file: 
-    path: {{ item }}
+    path: "{{ item }}"
     state: directory
     mode: 0775
-    owner: {{ user.name }}
-    group: {{ user.name }}
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     recurse: yes
   with_items:
     - /opt/jdownloader2
     - /opt/jdownloader2/config
     - /opt/jdownloader2/config/libs
-    - "/mnt/local/downloads/jdownloader2/output"
-    - "/opt/myjdownloaderapi"
+    - /mnt/local/downloads/jdownloader2/output
+    - /opt/myjdownloaderapi
 
 - name: Import 7zip 1509
   copy:

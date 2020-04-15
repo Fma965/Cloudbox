@@ -51,5 +51,6 @@
     - { role: nginx, tags: ['nginx'] }
     - { role: nzbthrottle, tags: ['nzbthrottle'] }
     - { role: community, tags: ['community'] }
+    - { role: plex-ldap, tags: ['plex-ldap'] }
     # --- Custom roles added by Fma965 for Coolflix ---
     - { role: traefik, tags: [core', 'cloudbox', 'mediabox', 'feederbox', 'traefik'] }

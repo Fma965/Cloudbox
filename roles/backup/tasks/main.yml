@@ -178,8 +178,7 @@
     - name: Create lists of ignored apps
       set_fact:
         reverse_proxy_apps:
-          - nginx-proxy
-          - letsencrypt
+          - traefik
         torrent_apps:
           - deluge
           - delugevpn

@@ -21,9 +21,6 @@
     name: lidarr
     state: absent
 
-- name: Suitarr Migration Tasks
-  import_tasks: "subtasks/suitarr_migration.yml"
-
 - name: Create lidarr directories
   file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
   with_items:

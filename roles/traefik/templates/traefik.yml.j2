@@ -1,0 +1,58 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+  
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entrypoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443"
+
+#log:
+#  level: INFO
+#  filePath: "/var/log/traefik/traefik.log"
+
+#accessLog:
+#  filePath: "/var/log/traefik/access.log"
+
+providers:
+  file:
+    filename: "/etc/traefik/config.yml"
+    watch: true
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    watch: true
+    exposedByDefault: true
+    defaultRule: "Host(`{% raw %}{{ normalize .Name }}{% endraw %}.{{ user.domain }}`)"# Expose containers by default in traefik
+
+serversTransport:
+  insecureSkipVerify: true
+
+api:
+  dashboard: true
+
+metrics:
+  influxDB:
+    address: influxdb:8086
+    protocol: http
+    database: traefik
+    username: root
+    password: root
+
+certificatesResolvers:
+  cloudflare:
+    acme:
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      email: {{ cloudflare.email }}
+      storage: /etc/traefik/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"

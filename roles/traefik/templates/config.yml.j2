@@ -1,0 +1,67 @@
+http:
+  routers:
+    radarrapi:
+      rule: Host(`radarr.{{ user.domain }}`) && PathPrefix(`/api`)
+      service: radarrapi@file
+      priority: 100
+      tls: {}
+    sonarrapi:
+      rule: Host(`sonarr.{{ user.domain }}`) && PathPrefix(`/api`)
+      service: sonarrapi@file
+      priority: 100
+      tls: {}
+    lidarrapi:
+      rule: Host(`lidarr.{{ user.domain }}`) && PathPrefix(`/api`)
+      service: lidarrapi@file
+      priority: 100
+      tls: {}
+    nzbgetapi:
+      rule: Host(`nzbget.{{ user.domain }}`) && PathPrefix(`/xmlrpc`)
+      service: nzbgetapi@file
+      priority: 100
+      tls: {}
+      middlewares:
+        - api-auth
+    jackettapi:
+      rule: Host(`jackett.{{ user.domain }}`) && PathPrefix(`/api`)
+      service: jackettapi@file
+      priority: 100
+      tls: {}
+      
+  services:
+    radarrapi:
+      loadBalancer:
+        servers:
+          - url: http://radarr:7878
+    sonarrapi:
+      loadBalancer:
+        servers:
+          - url: http://sonarr:8989
+    lidarrapi:
+      loadBalancer:
+        servers:
+          - url: http://lidarr:8686
+    nzbgetapi:
+      loadBalancer:
+        servers:
+          - url: http://nzbget:6789
+    jackettapi:
+      loadBalancer:
+        servers:
+          - url: http://jackett:9117
+  middlewares:
+    api-auth:
+      basicAuth:
+        usersFile: "/etc/traefik/htpasswd"
+    oauth-owner:
+      forwardAuth:
+        address: https://{{ user.domain }}/api/?v1/auth&group=0
+    oauth-coadmin:
+      forwardAuth:
+        address: https://{{ user.domain }}/api/?v1/auth&group=1
+    oauth-poweruser:
+      forwardAuth:
+        address: https://{{ user.domain }}/api/?v1/auth&group=2
+    oauth-user:
+      forwardAuth:
+        address: https://{{ user.domain }}/api/?v1/auth&group=3

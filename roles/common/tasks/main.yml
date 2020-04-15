@@ -177,22 +177,10 @@
   tags: z
   ignore_errors: yes
 
-- name: Install nodejs
-  import_role:
-    name: nodejs
-  tags: nodejs
-  ignore_errors: yes
-
 - name: Install hostess
   import_role:
     name: hostess
   tags: hostess
-  ignore_errors: yes
-
-- name: Install ngrok
-  import_role:
-    name: ngrok
-  tags: ngrok
   ignore_errors: yes
 
 - name: Install iperf3

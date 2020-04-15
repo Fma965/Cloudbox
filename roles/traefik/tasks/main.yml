@@ -1,0 +1,91 @@
+#########################################################################
+# Title:         Coolflix: Traefik                                      #
+# Author(s):     Fma965, guillaumebriday                                #
+# URL:           https://github.com/Fma965/coolflix                     #
+# Docker Images: traefik                                                #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: traefik
+    state: absent
+
+- name: Create traefik directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/traefik
+    - /opt/traefik/certs
+    - /opt/traefik/data
+    - /opt/traefik/logs
+
+- name: Create htpasswd
+  htpasswd:
+    path: "/opt/traefik/data/htpasswd"
+    name: "{{ user.name }}"
+    password: "{{ user.pass }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
+    
+- name: Ensures acme.json file exists
+  file:
+    path: "/opt/traefik/data/acme.json"
+    state: touch
+    mode: 0600
+
+- name: Adding traefik.yml file
+  template:
+    src: ../templates/traefik.yml.j2
+    dest: "/opt/traefik/data/traefik.yml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0600
+
+- name: Adding config.yml file
+  template:
+    src: ../templates/config.yml.j2
+    dest: "/opt/traefik/data/config.yml"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0600
+
+- name: Create and start container
+  docker_container:
+    name: traefik
+    image: traefik:2.2
+    pull: yes
+    published_ports:
+      - "80:80"
+      - "443:443"
+    env:
+      CF_API_EMAIL: "{{ cloudflare.email }}"
+      CF_API_KEY: "{{ cloudflare.api }}"
+    volumes:
+      - "/etc/localtime:/etc/localtime"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/opt/traefik/logs:/var/log/traefik"
+      - "/opt/traefik/data:/var/etc/traefik"
+    labels:
+      traefik.http.routers.traefik.middlewares: "oauth-coadmin@file"
+      traefik.http.routers.traefik.rule: "Host(`traefik.{{ user.domain }}`)"
+      traefik.http.routers.traefik.service: "api@internal"
+      traefik.http.routers.traefik.tls: "true"
+      traefik.http.routers.traefik.tls.certresolver: "cloudflare"
+      traefik.http.routers.traefik.tls.domains[0].main: "{{ user.domain }}"
+      traefik.http.routers.traefik.tls.domains[0].sans: "*.{{ user.domain }}"
+    networks:
+      - name: cloudbox  
+        aliases:
+          - traefik
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

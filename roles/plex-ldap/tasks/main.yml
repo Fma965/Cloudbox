@@ -12,47 +12,46 @@
   docker_container:
     name: plex-ldap
     state: absent
-  
+
 - name: Import Plex Auth Token role
   import_role:
     name: plex_auth_token
 
 - name: "Get Plex machineIdentifier and friendlyName"
   uri:
-    #url: "https://127.0.0.1/?X-Plex-Token={{ plex_auth_token }}"
-    
+    url: "https://127.0.0.1/?X-Plex-Token={{ plex_auth_token }}"
     validate_certs: no
+    return_content: yes
   register: plex_details_raw
 
 - name: Display Plex MachineID
   debug:
-    msg: "Plex Auth Token: {{ plex_details_raw | regex_search('machineIdentifier="(.*?)"') }}"
+    msg: "Plex machineIdentifier: {{ plex_details_raw.content | regex_findall('machineIdentifier=\"(.*?)\"') | first }}"
 
-# - name: Create and start container
-#   docker_container:
-#     name: plex-ldap
-#     image: "starbix/plex-ldap:latest"
-#     pull: yes
-#     published_ports:
-#       - "127.0.0.1:2389:2389"
-#     env:
-#       TOKEN: "{{ plex_auth_token }}"
-#       PUID: "{{ uid }}"
-#       PGID: "{{ gid }}"
-#       UMASK: 002
-#       VIRTUAL_HOST: "sonarr.{{ user.domain }}"
-#       VIRTUAL_PORT: 8989
-#       LETSENCRYPT_HOST: "sonarr.{{ user.domain }}"
-#       LETSENCRYPT_EMAIL: "{{ user.email }}"
-#       TZ: "{{ tz }}"
-#     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
-#     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
-#     labels:
-#       "com.github.cloudbox.cloudbox_managed": "true"
-#     networks:
-#       - name: cloudbox
-#         aliases:
-#           - sonarr
-#     purge_networks: yes
-#     restart_policy: unless-stopped
-#     state: started
+- name: Display Plex ServeName
+  debug:
+    msg: "Plex friendlyName: {{ plex_details_raw.content | regex_findall('friendlyName=\"(.*?)\"') | first }}"
+
+- name: Create and start container
+  docker_container:
+    name: plex-ldap
+    image: "starbix/plex-ldap:latest"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:2389:2389"
+    env:
+      TOKEN: "{{ plex_auth_token }}"
+      MACHINEID: "{{ plex_details_raw.content | regex_findall('machineIdentifier=\"(.*?)\"') | first }}"
+      SERVERNAME: "{{ plex_details_raw.content | regex_findall('friendlyName=\"(.*?)\"') | first }}"
+      UID: "{{ uid }}"
+      GID: "{{ gid }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.enable": "false"
+    networks:
+      - name: cloudbox
+        aliases:
+          - plex-ldap
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

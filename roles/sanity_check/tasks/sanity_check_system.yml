@@ -13,6 +13,7 @@
     msg:
       - "Cloudbox was designed for use on Ubuntu servers running versions 16.04+. With basic support for other Debian systems."
       - "Running Cloudbox on unsupported systems may cause unpredictable results."
+      - "This is a modified version of Cloudbox to be used for Coolflix by Fma965."
   when: (ansible_distribution != 'Ubuntu') or ((ansible_distribution == 'Ubuntu') and (ansible_distribution_version is version('16.04', '<')))
 
 - name: "Display System Info"

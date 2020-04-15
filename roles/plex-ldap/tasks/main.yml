@@ -1,0 +1,58 @@
+#########################################################################
+# Title:         Coolflix: Plex LDAP                                    #
+# Author(s):     Fma965                                                 #
+# URL:           https://github.com/Fma965/coolflix                     #
+# Docker Images: starbix/plex-ldap                                      #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: plex-ldap
+    state: absent
+  
+- name: Import Plex Auth Token role
+  import_role:
+    name: plex_auth_token
+
+- name: "Get Plex machineIdentifier and friendlyName"
+  uri:
+    #url: "https://127.0.0.1/?X-Plex-Token={{ plex_auth_token }}"
+    
+    validate_certs: no
+  register: plex_details_raw
+
+- name: Display Plex MachineID
+  debug:
+    msg: "Plex Auth Token: {{ plex_details_raw | regex_search('machineIdentifier="(.*?)"') }}"
+
+# - name: Create and start container
+#   docker_container:
+#     name: plex-ldap
+#     image: "starbix/plex-ldap:latest"
+#     pull: yes
+#     published_ports:
+#       - "127.0.0.1:2389:2389"
+#     env:
+#       TOKEN: "{{ plex_auth_token }}"
+#       PUID: "{{ uid }}"
+#       PGID: "{{ gid }}"
+#       UMASK: 002
+#       VIRTUAL_HOST: "sonarr.{{ user.domain }}"
+#       VIRTUAL_PORT: 8989
+#       LETSENCRYPT_HOST: "sonarr.{{ user.domain }}"
+#       LETSENCRYPT_EMAIL: "{{ user.email }}"
+#       TZ: "{{ tz }}"
+#     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+#     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
+#     labels:
+#       "com.github.cloudbox.cloudbox_managed": "true"
+#     networks:
+#       - name: cloudbox
+#         aliases:
+#           - sonarr
+#     purge_networks: yes
+#     restart_policy: unless-stopped
+#     state: started

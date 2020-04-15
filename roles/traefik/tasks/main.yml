@@ -8,6 +8,10 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: Install passlib for htpasswd generation
+  pip:
+    name: passlib
+
 - name: Stop and remove any existing container
   docker_container:
     name: traefik
@@ -61,7 +65,7 @@
 - name: Create and start container
   docker_container:
     name: traefik
-    image: traefik:2.2
+    image: traefik:v2.2.0
     pull: yes
     published_ports:
       - "80:80"
@@ -73,7 +77,7 @@
       - "/etc/localtime:/etc/localtime"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/opt/traefik/logs:/var/log/traefik"
-      - "/opt/traefik/data:/var/etc/traefik"
+      - "/opt/traefik/data:/etc/traefik"
     labels:
       traefik.http.routers.traefik.middlewares: "oauth-coadmin@file"
       traefik.http.routers.traefik.rule: "Host(`traefik.{{ user.domain }}`)"

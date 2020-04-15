@@ -39,17 +39,9 @@
   import_tasks: "subtasks/settings/forced_quality.yml"
   tags: plex-forced-quality
 
-- name: "Extra | Install Sub-Zero Plugin"
-  import_role:
-    name: sub-zero-plugin
-
 - name: "Extra | Install Trakt.tv Plugin"
   import_role:
     name: trakttv-plugin
-
-- name: "Extra | Install WebTools Plugin"
-  import_role:
-    name: webtools-plugin
 
 - name: Extra | Start Plex Container
   docker_container:

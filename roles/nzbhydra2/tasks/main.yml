@@ -70,8 +70,8 @@
     volumes: "{{ default_volumes + migration_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.nzbhydra2.tls":"true"
-      "traefik.http.routers.nzbhydra2.middlewares":"oauth-poweruser@file"
+      "traefik.http.routers.nzbhydra2.tls": "true"
+      "traefik.http.routers.nzbhydra2.middlewares": "oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:

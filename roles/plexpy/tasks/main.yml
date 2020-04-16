@@ -56,7 +56,7 @@
       - "/opt/scripts:/scripts"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.plexpy.tls":"true"
+      "traefik.http.routers.plexpy.tls": "true"
     networks:
       - name: cloudbox
         aliases:

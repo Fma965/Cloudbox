@@ -71,8 +71,8 @@
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.nzbget.tls":"true"
-      "traefik.http.routers.nzbget.middlewares":"oauth-user@file"
+      "traefik.http.routers.nzbget.tls": "true"
+      "traefik.http.routers.nzbget.middlewares": "oauth-user@file"
 
     networks:
       - name: cloudbox

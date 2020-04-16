@@ -63,8 +63,8 @@
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.radarr.tls":"true"
-      "traefik.http.routers.radarr.middlewares":"oauth-poweruser@file"
+      "traefik.http.routers.radarr.tls": "true"
+      "traefik.http.routers.radarr.middlewares": "oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:

@@ -50,7 +50,7 @@
       - "/opt/ombi:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.ombi.tls":"true"
+      "traefik.http.routers.ombi.tls": "true"
     networks:
       - name: cloudbox
         aliases:

@@ -59,8 +59,8 @@
       - "/opt/organizr:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.organizr.tls":"true"
-      "traefik.http.routers.organizr.rule":"Host(`{{ user.domain }}`)"
+      "traefik.http.routers.organizr.tls": "true"
+      "traefik.http.routers.organizr.rule": "Host(`{{ user.domain }}`)"
     networks:
       - name: cloudbox
         aliases:

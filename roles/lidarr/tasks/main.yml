@@ -22,7 +22,13 @@
     state: absent
 
 - name: Create lidarr directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/lidarr
 
@@ -46,14 +52,12 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       UMASK: 002
-      VIRTUAL_HOST: "lidarr.{{ user.domain }}"
-      VIRTUAL_PORT: 8686
-      LETSENCRYPT_HOST: "lidarr.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.radarr.tls":"true"
+      "traefik.http.routers.radarr.middlewares":"oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:

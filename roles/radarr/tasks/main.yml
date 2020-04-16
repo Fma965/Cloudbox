@@ -22,16 +22,16 @@
     name: radarr
     state: absent
 
-- name: Suitarr Migration Tasks
-  import_tasks: "subtasks/suitarr_migration.yml"
-
 - name: Create radarr directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/radarr
-
-- name: Darkerr Tasks
-  import_tasks: "subtasks/darkerr.yml"
 
 - name: "Check if '/dev/dri' exists"
   stat:
@@ -58,15 +58,13 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       UMASK: 002
-      VIRTUAL_HOST: "radarr.{{ user.domain }}"
-      VIRTUAL_PORT: 7878
-      LETSENCRYPT_HOST: "radarr.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.radarr.tls":"true"
+      "traefik.http.routers.radarr.middlewares":"oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:

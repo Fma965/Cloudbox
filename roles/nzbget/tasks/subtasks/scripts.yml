@@ -9,7 +9,13 @@
 #########################################################################
 ---
 - name: Scripts | Create nzbget script directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/scripts/nzbget
     - /opt/scripts/nzbget/nzbgetpp

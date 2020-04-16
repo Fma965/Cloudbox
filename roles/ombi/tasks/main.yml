@@ -21,11 +21,14 @@
     name: ombi
     state: absent
 
-- name: Suitarr | Migration Tasks
-  import_tasks: "subtasks/suitarr/migration.yml"
-
 - name: Create ombi directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/ombi
 
@@ -41,16 +44,13 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       UMASK: 002
-      VIRTUAL_HOST: "{{ ombi.subdomain|default('ombi',true) }}.{{ user.domain }}"
-      VIRTUAL_PORT: 5000
-      LETSENCRYPT_HOST: "{{ ombi.subdomain|default('ombi',true) }}.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
       LC_ALL: "en_US.UTF-8"
       TZ: "{{ tz }}"
     volumes:
       - "/opt/ombi:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.ombi.tls":"true"
     networks:
       - name: cloudbox
         aliases:

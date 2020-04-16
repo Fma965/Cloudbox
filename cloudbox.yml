@@ -23,7 +23,7 @@
     - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override'], when: ['use_remote'] }
     - { role: unionfs, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override'] }
     - { role: scripts, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'scripts'] }
-    - { role: cloudflare, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'cloudflare'], when: ['cloudflare_enabled'] }
+    - { role: traefik, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'traefik'] }
     - { role: plex, tags: ['cloudbox', 'mediabox', 'plex'] }
     - { role: plexpy, tags: ['cloudbox', 'mediabox', 'plexpy'] }
     - { role: ombi, tags: ['cloudbox', 'mediabox', 'ombi'] }
@@ -54,4 +54,4 @@
     - { role: plex-ldap, tags: ['plex-ldap'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     # --- Custom roles added by Fma965 for Coolflix ---
-    - { role: traefik, tags: [core', 'cloudbox', 'mediabox', 'feederbox', 'traefik'] }
+

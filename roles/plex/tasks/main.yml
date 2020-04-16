@@ -16,7 +16,13 @@
   when: cloudflare_enabled
 
 - name: "Create Plex directories"
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items: "{{ plex_folders }}"
 
 - name: "Stop and remove any existing container"
@@ -49,11 +55,6 @@
       PLEX_CLAIM: "{{ (plex_claim_code) | default(omit) }}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
       ADVERTISE_IP: "http://plex.{{ user.domain }}:80/,https://plex.{{ user.domain }}:443/"
-      VIRTUAL_HOST: "plex.{{ user.domain }}"
-      VIRTUAL_PORT: 32400
-      LETSENCRYPT_HOST: "plex.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
-      HTTPS_METHOD: noredirect
       HEALTHCHECK_MOUNT: /mnt/unionfs
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if (gpu.nvidia.enabled) | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if (gpu.nvidia.enabled) | default(false) else omit }}"
@@ -63,6 +64,8 @@
     etc_hosts: "{{ plex_docker_hosts }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.plex.tls":"true"
+      "traefik.http.services.plex.loadbalancer.server.port":"32400"
     networks:
       - name: cloudbox
         aliases:

@@ -28,7 +28,13 @@
   when: (not continuous_integration)
 
 - name: Create plexpy directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/plexpy
     - /opt/scripts/plexpy
@@ -43,10 +49,6 @@
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      VIRTUAL_HOST: "plexpy.{{ user.domain }}"
-      VIRTUAL_PORT: 8181
-      LETSENCRYPT_HOST: "plexpy.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
       TZ: "{{ tz }}"
     volumes:
       - "/opt/plexpy:/config"
@@ -54,6 +56,7 @@
       - "/opt/scripts:/scripts"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.plexpy.tls":"true"
     networks:
       - name: cloudbox
         aliases:

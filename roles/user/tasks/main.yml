@@ -54,25 +54,25 @@
 - name: "Do following tasks when not in the user's cloudbox folder"
   block:
 
-#  - name: "Delete previous cloudbox folder if it exists"
-#    file:
-#      path: "/home/{{ user.name }}/cloudbox"
-#      state: absent
+ - name: "Delete previous cloudbox folder if it exists"
+   file:
+     path: "/home/{{ user.name }}/cloudbox"
+     state: absent
 
-#  - name: "Get current git branch"
-#    shell: git rev-parse --abbrev-ref HEAD
-#    register: git_branch
+ - name: "Get current git branch"
+   shell: git rev-parse --abbrev-ref HEAD
+   register: git_branch
 
-#  - name: "Clone Cloudbox project"
-#    git:
-#      repo: "https://github.com/cloudbox/cloudbox.git"
-#      dest: "{{ new_home_path }}/cloudbox/"
-#      version: "{{ git_branch.stdout }}"
-#      clone: yes
-#      force: yes
-#    become: yes
-#    become_user: "{{ user.name }}"
-#    ignore_errors: yes
+ - name: "Clone Cloudbox project"
+   git:
+     repo: "https://github.com/fma965/cloudbox.git"
+     dest: "{{ new_home_path }}/cloudbox/"
+     version: "{{ git_branch.stdout }}"
+     clone: yes
+     force: yes
+   become: yes
+   become_user: "{{ user.name }}"
+   ignore_errors: yes
 
   - name: "Copy config files to cloudbox folder"
     copy:

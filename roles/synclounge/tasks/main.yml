@@ -1,0 +1,52 @@
+#########################################################################
+# Title:            Community: SyncLounge                               #
+# Author(s):        Fma965, primaxius                                           #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  starbix/synclounge                                  #
+# --                                                                    #
+#   (Modified) Part of the Cloudbox project: https://cloudbox.works     #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: synclounge
+    state: absent
+
+- name: Create opt directory
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/synclounge
+
+- name: Create and start container
+  docker_container:
+    name: synclounge
+    image: "starbix/synclounge:latest"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8089:8089"
+      - "127.0.0.1:8088:8088"
+    env:
+      DOMAIN: "together.{{ user.domain }}"
+      autoJoin: "true"
+      autoJoinServer: "https://together.{{ user.domain }}/slserver"
+      webroot: ""
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.synclounge.rule": "Host(`together.{{ user.domain }}`)"
+      "traefik.http.routers.synclounge.tls": "true"
+      "traefik.http.services.synclounge.loadbalancer.server.port":"8088"
+    networks:
+      - name: cloudbox
+        aliases:
+          - synclounge
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

@@ -22,7 +22,13 @@
     state: absent
 
 - name: Create portainer directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/portainer
 
@@ -37,13 +43,9 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/portainer:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-    env:
-      VIRTUAL_HOST: "portainer.{{ user.domain }}"
-      VIRTUAL_PORT: 9000
-      LETSENCRYPT_HOST: "portainer.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.portainer.tls":"true"
     networks:
       - name: cloudbox
         aliases:

@@ -50,7 +50,7 @@
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.jackett.tls": "true"
-      "traefik.http.routers.jackett.middlewares": oauth-coadmin@file"
+      "traefik.http.routers.jackett.middlewares": "oauth-coadmin@file"
     networks:
       - name: cloudbox
         aliases:

@@ -63,9 +63,9 @@
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     etc_hosts: "{{ plex_docker_hosts }}"
     labels:
-      "com.github.cloudbox.cloudbox_managed":"true"
-      "traefik.http.routers.plex.tls":"true"
-      "traefik.http.services.plex.loadbalancer.server.port":"32400"
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.plex.tls": "true"
+      "traefik.http.services.plex.loadbalancer.server.port": "32400"
     networks:
       - name: cloudbox
         aliases:

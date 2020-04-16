@@ -36,12 +36,12 @@
 #     line: "ControlPassword={{ user.pass }}"
 #     state: present
 
-- name: Settings | Set FormAuth
-  lineinfile:
-    path: "/opt/nzbget/app/nzbget.conf"
-    regexp: '^FormAuth\s?=.*'
-    line: 'FormAuth=yes'
-    state: present
+#- name: Settings | Set FormAuth
+#  lineinfile:
+#    path: "/opt/nzbget/app/nzbget.conf"
+#    regexp: '^FormAuth\s?=.*'
+#    line: 'FormAuth=yes'
+#    state: present
 
 # Paths
 - name: Settings | Change MainDir to downloads directory

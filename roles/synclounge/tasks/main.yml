@@ -42,7 +42,7 @@
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.synclounge.rule": "Host(`together.{{ user.domain }}`)"
       "traefik.http.routers.synclounge.tls": "true"
-      "traefik.http.services.synclounge.loadbalancer.server.port":"8088"
+      "traefik.http.services.synclounge.loadbalancer.server.port": "8088"
     networks:
       - name: cloudbox
         aliases:

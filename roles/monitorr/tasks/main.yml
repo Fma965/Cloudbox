@@ -1,0 +1,80 @@
+#########################################################################
+# Title:            Community: Monitorr                                 #
+# Author(s):        Superduper09, Kalroth                               #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  monitorr/monitorr                                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: monitorr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: monitorr
+    state: absent
+
+- name: Create monitorr directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/monitorr
+    - /opt/monitorr/userdata
+
+- name: Check services_settings-data.json exists
+  stat:
+    path: "/opt/monitorr/userdata/services_settings-data.json"
+  register: monitorr_services
+
+- name: Import services_settings-data.json
+  template:
+    src: "services_settings-data.json.j2"
+    dest: "/opt/monitorr/userdata/services_settings-data.json"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+  when: (not monitorr_services.stat.exists)
+
+- name: "Add extra images"
+  copy:
+    src: "images/"
+    dest: "/opt/monitorr/images/"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+
+- name: Create and start container
+  docker_container:
+    name: monitorr
+    image: monitorr/monitorr:develop
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+    volumes:
+      - "/opt/monitorr:/app"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.monitorr.tls": "true"
+      "traefik.http.routers.monitorr.middlewares": "oauth-poweruser@file"
+    networks:
+      - name: cloudbox
+        aliases:
+          - monitorr
+    restart_policy: unless-stopped
+    state: started

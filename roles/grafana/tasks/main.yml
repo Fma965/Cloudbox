@@ -1,8 +1,8 @@
 #########################################################################
-# Title:            Community: SyncLounge                               #
-# Author(s):        Fma965, primaxius                                           #
-# URL:              https://github.com/Cloudbox/Community               #
-# Docker Image(s):  starbix/synclounge                                  #
+# Title:            Coolflix: Grafana                                   #
+# Author(s):        Fma965                                              #
+# URL:              https://github.com/Fma965/Cloudbox                  #
+# Docker Image(s):  grafana/grafana                                     #
 # --                                                                    #
 #   (Modified) Part of the Cloudbox project: https://cloudbox.works     #
 #########################################################################
@@ -13,12 +13,12 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: together
+    subdomain: grafana
   when: cloudflare_enabled
 
 - name: Stop and remove any existing container
   docker_container:
-    name: synclounge
+    name: grafana
     state: absent
 
 - name: Create opt directory
@@ -30,30 +30,39 @@
     group: "{{ user.name }}"
     recurse: yes
   with_items:
-    - /opt/synclounge
+    - /opt/grafana
+
+- name: Add custom.ini
+  copy:
+    src: "custom.ini"
+    dest: "/opt/grafana/grafana.ini"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: no
 
 - name: Create and start container
   docker_container:
-    name: synclounge
-    image: "starbix/synclounge:latest"
+    name: grafana
+    image: "grafana/grafana:latest"
     pull: yes
     published_ports:
-      - "127.0.0.1:8089:8089"
-      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/grafana:/var/lib/grafana"
+      - "/opt/grafana/grafana.ini:/etc/grafana/custom.ini"
     env:
-      DOMAIN: "together.{{ user.domain }}"
-      autoJoin: "true"
-      autoJoinServer: "https://together.{{ user.domain }}/slserver"
-      webroot: ""
+      GF_SECURITY_ADMIN_PASSWORD: "{{ user.pass }}"
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel,grafana-worldmap-panel"
+      GF_SERVER_ROOT_URL: "https://grafana.{{ user.domain }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.synclounge.rule": "Host(`together.{{ user.domain }}`)"
-      "traefik.http.routers.synclounge.tls": "true"
-      "traefik.http.services.synclounge.loadbalancer.server.port": "8088"
+      "traefik.http.routers.grafana.tls": "true"
     networks:
       - name: cloudbox
         aliases:
-          - synclounge
+          - grafana
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

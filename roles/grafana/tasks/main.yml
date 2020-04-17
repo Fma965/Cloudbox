@@ -26,20 +26,11 @@
     path: "{{ item }}"
     state: directory
     mode: 0775
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
+    owner: "472"
+    group: "472"
     recurse: yes
   with_items:
     - /opt/grafana
-
-- name: Add custom.ini
-  copy:
-    src: "custom.ini"
-    dest: "/opt/grafana/grafana.ini"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-    force: no
 
 - name: Create and start container
   docker_container:
@@ -56,6 +47,8 @@
       GF_SECURITY_ADMIN_PASSWORD: "{{ user.pass }}"
       GF_INSTALL_PLUGINS: "grafana-piechart-panel,grafana-worldmap-panel"
       GF_SERVER_ROOT_URL: "https://grafana.{{ user.domain }}"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.grafana.tls": "true"

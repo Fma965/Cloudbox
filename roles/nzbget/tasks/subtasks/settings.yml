@@ -29,12 +29,12 @@
 #     line: "ControlUsername={{ user.name }}"
 #     state: present
 
-# - name: Settings | Set Password
-#   lineinfile:
-#     path: "/opt/nzbget/app/nzbget.conf"
-#     regexp: '^ControlPassword\s?=.*'
-#     line: "ControlPassword={{ user.pass }}"
-#     state: present
+- name: Settings | Set Password
+  lineinfile:
+    path: "/opt/nzbget/app/nzbget.conf"
+    regexp: '^ControlPassword\s?=.*'
+    line: "ControlPassword="
+    state: present
 
 #- name: Settings | Set FormAuth
 #  lineinfile:

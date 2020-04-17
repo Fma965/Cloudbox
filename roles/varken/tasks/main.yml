@@ -55,6 +55,7 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       TZ: "{{ tz }}"
+      VRKN_GLOBAL_MAXMIND_LICENSE_KEY: "{{ maxmind.key }}"
     volumes:
       - "/opt/varken:/config"
     labels:

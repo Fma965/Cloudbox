@@ -41,7 +41,7 @@
       - "/opt/mariadb:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.enable" false
+      "traefik.enable": "false"
     networks:
       - name: cloudbox
         aliases:

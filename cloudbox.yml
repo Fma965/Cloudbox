@@ -54,5 +54,6 @@
     - { role: plex-ldap, tags: ['plex-ldap'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: synclounge, tags: ['synclounge'] }
+    - { role: grafana, tags: ['grafana'] }
     # --- Custom roles added by Fma965 for Coolflix ---
 

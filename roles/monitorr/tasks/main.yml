@@ -57,6 +57,15 @@
     mode: 0775
     force: yes
 
+- name: "Set datadir"
+  copy:
+    src: "datadir.json"
+    dest: "/opt/monitorr/datadir.json"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+
 - name: Create and start container
   docker_container:
     name: monitorr

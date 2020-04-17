@@ -55,6 +55,8 @@
     - { role: plex-ldap, tags: ['plex-ldap'] }
     - { role: jdownloader2, tags: ['jdownloader2'] }
     - { role: synclounge, tags: ['synclounge'] }
-    - { role: grafana, tags: ['grafana'] }
     - { role: handbrake, tags: ['handbrake'] }
-
+    - { role: grafana, tags: ['grafana'] }
+    - { role: influxdb, tags: ['influxdb'] }
+    - { role: varken, tags: ['varken'] }
+    - { role: telegraf, tags: ['telegraf'] }

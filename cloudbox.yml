@@ -60,3 +60,4 @@
     - { role: influxdb, tags: ['influxdb'] }
     - { role: varken, tags: ['varken'] }
     - { role: telegraf, tags: ['telegraf'] }
+    - { role: mellow, tags: ['mellow'] }

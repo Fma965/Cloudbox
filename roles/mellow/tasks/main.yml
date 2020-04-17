@@ -1,20 +1,27 @@
 #########################################################################
-# Title:            Cloudbox: MariaDB Role                              #
-# Author(s):        l3uddz, desimaniac                                  #
-# URL:              https://github.com/cloudbox/cloudbox                #
-# Docker Image(s):  linuxserver/mariadb                                 #
+# Title:            Community: Mellow                                   #
+# Author(s):        Superduper09                                        #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  voidp/mellow                                        #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.works          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: Stop and remove any existing containers
-  docker_container: "name={{ item }} state=absent"
-  with_items:
-    - mariadb
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: mellow
+  when: cloudflare_enabled
 
-- name: Create required directories
+- name: Stop and remove any existing container
+  docker_container:
+    name: mellow
+    state: absent
+
+- name: Create mellow directories
   file: 
     path: "{{ item }}"
     state: directory
@@ -23,29 +30,27 @@
     group: "{{ user.name }}"
     recurse: yes
   with_items:
-    - /opt/mariadb
+    - /opt/mellow
 
-- name: Create and start mariadb container
+- name: Create and start container
   docker_container:
-    name: mariadb
-    image: "linuxserver/mariadb"
+    name: mellow
+    image: voidp/mellow
     pull: yes
     published_ports:
-      - "127.0.0.1:3306:3306"
+      - "127.0.0.1:5060:5060"
     env:
+      TZ: "{{ tz }}"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
-      MYSQL_ROOT_PASSWORD: "password321"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/mariadb:/config"
+      - "/opt/mellow:/usr/src/app/data/"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.enable" false
+      "traefik.http.routers.mellow.tls": "true"
     networks:
       - name: cloudbox
         aliases:
-          - mariadb
-    purge_networks: yes
+          - mellow
     restart_policy: unless-stopped
     state: started

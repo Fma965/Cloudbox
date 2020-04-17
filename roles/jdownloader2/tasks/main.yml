@@ -96,7 +96,7 @@
     published_ports:
       - "127.0.0.1:8478:8080"
     env:
-      USER: "{{ user.name }}"
+      USER: "{{ user.email }}"
       PASS: "{{ user.pass }}"
     volumes:
       - "/opt/myjdownloaderapi:/config:rw"

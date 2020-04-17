@@ -76,6 +76,10 @@
       - "/opt/jdownloader2/config:/config:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.jdownloader2.tls": "true"
+      "traefik.http.services.jdownloader2.loadbalancer.server.port": "5800"
+      "traefik.http.routers.jdownloader2.rule": "Host(`downloads.{{ user.domain }}`)"
+      "traefik.http.routers.jdownloader2.middlewares": "oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:
@@ -98,6 +102,7 @@
       - "/opt/myjdownloaderapi:/config:rw"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.enable": "false"
     networks:
       - name: cloudbox
         aliases:

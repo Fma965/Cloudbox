@@ -1,0 +1,80 @@
+#########################################################################
+# Title:            Cloudbox: Radarr4K Role                             #
+# Author(s):        l3uddz, desimaniac                                  #
+# URL:              https://github.com/cloudbox/cloudbox                #
+# Docker Image(s):  hotio/radarr,                                       #
+#                   andrewkhunn/suitarr_mp4_automator                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Stop and remove any existing container
+  docker_container:
+    name: radarrsync
+    state: absent
+
+# Radarr Tasks
+- name: "Check if radarr exists"
+  stat:
+    path: "/opt/radarr/app/config.xml"
+  register: radarr_config
+
+- name: Pull radarr api key
+  xml:
+    path: "/opt/radarr/app/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: radarr_config.stat.exists
+
+- name: Set 'radarr_api_key'
+  set_fact:
+    radarr_api_key: "{{ xmlresp.matches[0].ApiKey if radarr_config.stat.exists else '' }}"
+
+# Radarr4K Tasks
+- name: "Check if radarr4k exists"
+  stat:
+    path: "/opt/radarr4k/app/config.xml"
+  register: radarr4k_config
+
+- name: Pull radarr4k api key
+  xml:
+    path: "/opt/radarr4k/app/config.xml"
+    xpath: /Config/ApiKey
+    content: text
+  register: xmlresp
+  when: radarr_config4k.stat.exists
+
+- name: Set 'radarr4k_api_key'
+  set_fact:
+    radarr4k_api_key: "{{ xmlresp.matches[0].ApiKey if radarr_config4k.stat.exists else '' }}"
+
+- name: Create and start container
+  docker_container:
+    name: radarrsync
+    image: "dmanius/radarrsync-docker"
+    pull: yes
+    env:
+      RADARR_URL: "http://radarr:7878"
+      RADARR4K_URL: "http://radarr4k:7878"
+      RADARR_KEY: "{{ radarr_api_key }}"
+      RADARR4K_KEY: "{{ radarr4k_api_key }}"
+      PROFILE_ID: "5"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: 002
+      TZ: "{{ tz }}"
+    volumes: "{{ default_volumes + nzbs_downloads_path|default([]) + torrents_downloads_path|default([]) }}"
+    devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and sickbeard_mp4_automator and dev_dri.stat.exists) | default(false) else omit }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.enable": "false"
+    networks:
+      - name: cloudbox
+        aliases:
+          - radarr4k
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

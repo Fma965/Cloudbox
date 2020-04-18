@@ -64,3 +64,4 @@
     - { role: monitorr, tags: ['monitorr'] }
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: radarr4k, tags: ['radarr4k'] }
+    - { role: radarrsync, tags: ['radarrsync'] }

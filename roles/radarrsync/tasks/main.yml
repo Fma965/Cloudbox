@@ -45,11 +45,11 @@
     xpath: /Config/ApiKey
     content: text
   register: xmlresp
-  when: radarr_config4k.stat.exists
+  when: radarr4k_config.stat.exists
 
 - name: Set 'radarr4k_api_key'
   set_fact:
-    radarr4k_api_key: "{{ xmlresp.matches[0].ApiKey if radarr_config4k.stat.exists else '' }}"
+    radarr4k_api_key: "{{ xmlresp.matches[0].ApiKey if radarr4k_config.stat.exists else '' }}"
 
 - name: Create and start container
   docker_container:

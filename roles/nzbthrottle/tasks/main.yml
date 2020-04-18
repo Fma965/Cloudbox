@@ -55,7 +55,7 @@
       - "/opt/nzbthrottle/config.json:/nzbthrottle/config.json:ro"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.enable" "false"
+      "traefik.enable": "false"
     networks:
       - name: cloudbox
         aliases:

@@ -64,8 +64,7 @@
     capabilities:
       - NET_ADMIN
     published_ports:
-      - "56881:56881"
-      - "56881:56881/udp"
+      - "127.0.0.1:8256:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -75,6 +74,7 @@
       VPN_USER: "{{ pia.user }}"
       VPN_PASS: "{{ pia.pass }}"
       VPN_PROV: "pia"
+      WEBUI_PORT: "8080"
       STRICT_PORT_FORWARD: "yes"
       ENABLE_PRIVOXY: "yes"
       LAN_NETWORK: "172.18.0.1/16"

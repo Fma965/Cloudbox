@@ -14,6 +14,9 @@ pushover:
   app_token:
   user_key:
   priority:
+pia:
+  user: 
+  pass:
 maxmind:
   key:
 apprise:

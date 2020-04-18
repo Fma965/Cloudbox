@@ -8,6 +8,13 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: traefik
+  when: cloudflare_enabled
+
 - name: Install passlib for htpasswd generation
   pip:
     name: passlib

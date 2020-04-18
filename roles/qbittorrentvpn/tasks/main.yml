@@ -1,0 +1,117 @@
+#########################################################################
+# Title:            CoolFlix: qBittorrentVPN - PIA                      #
+# Author(s):        Fma965                                              #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  binhex/arch-qbittorrentvpn                          #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: torrents
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: qbittorrentvpn
+    state: absent
+
+- name: Create qbittorrentvpn directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/qbittorrentvpn
+
+- name: Create new downloads directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - "{{ downloads.torrents }}"
+    - "{{ downloads.torrents }}/qbittorrentvpn"
+    - "{{ downloads.torrents }}/qbittorrentvpn/completed"
+    - "{{ downloads.torrents }}/qbittorrentvpn/incoming"
+    - "{{ downloads.torrents }}/qbittorrentvpn/watched"
+    - "{{ downloads.torrents }}/qbittorrentvpn/torrents"
+  when: (torrents_downloads_path is defined)|default(false)
+
+- name: Set default_volumes variable
+  set_fact:
+    default_volumes:
+      - "/opt/qbittorrentvpn:/config"
+      - "/opt/scripts:/scripts"
+      - "/mnt:/mnt"
+      - "/etc/localtime:/etc/localtime"
+
+- name: Create and start container
+  docker_container:
+    name: qbittorrentvpn
+    image: binhex/arch-qbittorrentvpn
+    pull: yes
+    published_ports:
+      - "56881:56881"
+      - "56881:56881/udp"
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK_SET: "002"
+      VPN_ENABLED: "yes"
+      VPN_USER: "{{ pia.user }}"
+      VPN_PASS: "{{ pia.pass }}"
+      STRICT_PORT_FORWARD: "yes"
+      ENABLE_PRIVOXY: "yes"
+      LAN_NETWORK: "172.18.0.1/16"
+      NAME_SERVERS: "209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1"
+    volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.qbittorrentvpn.tls": "true"
+      "traefik.http.services.qbittorrentvpn.loadbalancer.server.port": "8080"
+      "traefik.http.routers.qbittorrentvpn.rule": "Host(`torrents.{{ user.domain }}`)"
+    networks:
+      - name: cloudbox
+        aliases:
+          - qbittorrentvpn
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: Check if '/opt/qbittorrentvpn/openvpn/credentials.conf' exists
+  stat:
+    path: "/opt/qbittorrentvpn/openvpn/credentials.conf"
+  register: vpn_credentials
+
+- name: Wait for 
+  wait_for:
+    path: "/opt/qbittorrentvpn/openvpn/credentials.conf"
+    state: present
+  when: (not vpn_credentials.stat.exists)
+
+- name: Check if '/opt/qbittorrentvpn/openvpn/pia.ovpn' exists
+  stat:
+    path: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
+  register: vpn_file
+
+- name: "Copy PIA DE Frankfurt OpenVPN file"
+  copy:
+    src: "DE Frankfurt.ovpn"
+    dest: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+  when: (vpn_file.stat.exists)

@@ -33,34 +33,10 @@
     - /opt/monitorr
     - /opt/monitorr/userdata
 
-- name: Check services_settings-data.json exists
-  stat:
-    path: "/opt/monitorr/userdata/services_settings-data.json"
-  register: monitorr_services
-
-- name: Import services_settings-data.json
-  template:
-    src: "services_settings-data.json.j2"
-    dest: "/opt/monitorr/userdata/services_settings-data.json"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-    force: yes
-  when: (not monitorr_services.stat.exists)
-
 - name: "Add extra images"
   copy:
     src: "images/"
     dest: "/opt/monitorr/images/"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-    force: yes
-
-- name: "Set datadir"
-  copy:
-    src: "datadir.json"
-    dest: "/opt/monitorr/datadir.json"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 0775

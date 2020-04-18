@@ -26,7 +26,13 @@
     - nextcloud
 
 - name: Create required directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }}"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/nextcloud
     - /opt/nextcloud/conf
@@ -43,10 +49,6 @@
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
       VIRTUAL_HOST: "nextcloud.{{ user.domain }}"
-      VIRTUAL_PORT: 443
-      VIRTUAL_PROTO: https
-      LETSENCRYPT_HOST: "nextcloud.{{ user.domain }}"
-      LETSENCRYPT_EMAIL: "{{ user.email }}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/opt/nextcloud/conf:/config"
@@ -54,6 +56,10 @@
       - "/mnt:/mnt"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.nextcloud.tls": "true"
+      "traefik.http.services.nextcloud.loadbalancer.server.port": "443"
+      "traefik.http.services.nextcloud.loadbalancer.server.scheme": "https"
+      "traefik.http.routers.nextcloud.rule": "Host(`cloud.{{ user.domain }}`)"
     networks:
       - name: cloudbox
         aliases:

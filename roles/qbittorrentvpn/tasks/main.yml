@@ -61,7 +61,8 @@
     name: qbittorrentvpn
     image: binhex/arch-qbittorrentvpn
     pull: yes
-    privileged: yes
+    capabilities:
+      - NET_ADMIN
     published_ports:
       - "56881:56881"
       - "56881:56881/udp"

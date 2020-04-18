@@ -62,3 +62,4 @@
     - { role: telegraf, tags: ['telegraf'] }
     - { role: mellow, tags: ['mellow'] }
     - { role: monitorr, tags: ['monitorr'] }
+    - { role: qbittorentvpn, tags: ['qbittorentvpn'] }

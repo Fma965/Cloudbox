@@ -64,7 +64,7 @@
     capabilities:
       - NET_ADMIN
     published_ports:
-      - "127.0.0.1:8256:8080"
+      - "127.0.0.1:8080:8080"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"
@@ -82,9 +82,10 @@
     volumes: "{{ default_volumes + torrents_downloads_path|default([]) }}"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
-      "traefik.http.routers.qbittorrentvpn.tls": "true"
       "traefik.http.services.qbittorrentvpn.loadbalancer.server.port": "8080"
+      "traefik.http.routers.qbittorrentvpn.tls": "true"
       "traefik.http.routers.qbittorrentvpn.rule": "Host(`torrents.{{ user.domain }}`)"
+      "traefik.http.routers.qbittorrentvpn.middlewares": "oauth-poweruser@file"
     networks:
       - name: cloudbox
         aliases:

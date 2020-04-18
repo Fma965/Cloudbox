@@ -90,16 +90,21 @@
     restart_policy: unless-stopped
     state: started
 
-- name: Check if '/opt/qbittorrentvpn/openvpn/credentials.conf' exists
+- name: Check if '/opt/qbittorrentvpn/openvpn/' exists
   stat:
-    path: "/opt/qbittorrentvpn/openvpn/credentials.conf"
-  register: vpn_credentials
+    path: "/opt/qbittorrentvpn/openvpn/"
+  register: qbittorrentvpn_openvpn
 
 - name: Wait for 
   wait_for:
-    path: "/opt/qbittorrentvpn/openvpn/credentials.conf"
+    path: "/opt/qbittorrentvpn/openvpn"
     state: present
-  when: (not vpn_credentials.stat.exists)
+  when: (not qbittorrentvpn_openvpn.stat.exists)
+
+- name: Stop qBittorrentVPN Container
+  docker_container:
+    name: qbittorrentvpn
+    state: stopped
 
 - name: Check if '/opt/qbittorrentvpn/openvpn/pia.ovpn' exists
   stat:
@@ -115,3 +120,8 @@
     mode: 0775
     force: yes
   when: (vpn_file.stat.exists)
+
+- name: Start qBittorrentVPN Container
+  docker_container:
+    name: qbittorrentvpn
+    state: started

@@ -15,7 +15,13 @@
     state: absent
 
 - name: Create nzbthrottle directories
-  file: "path={{ item }} state=directory mode=0775 owner={{ user.name }} group={{ user.name }} recurse=yes"
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
   with_items:
     - /opt/nzbthrottle
 
@@ -49,6 +55,7 @@
       - "/opt/nzbthrottle/config.json:/nzbthrottle/config.json:ro"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.enable" "false"
     networks:
       - name: cloudbox
         aliases:

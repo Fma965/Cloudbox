@@ -1,0 +1,177 @@
+@media only screen and (min-width: 1080px) {
+	.row {
+	  display: -webkit-box;
+	  display: -webkit-flex;
+	  display: -ms-flexbox;
+	  display:         flex;
+	  flex-wrap: wrap;
+	  margin: 0px;
+	}
+	
+	.homesections {
+		background-clip: padding-box;
+		border: 10px solid transparent;
+	}
+}
+		
+.homesections {
+    padding-top: 0px;
+}
+		
+#planbuttons, #submit, #placeholder, #cancel, #currencyselect {
+	display:none;
+}
+
+.inline {
+	display:inline;
+}
+
+.container-fluid {
+	max-width: 1800px;
+}
+
+#notes {
+	width:100%;
+	height:90%;
+}
+
+.fullwidthinput {
+	width:100% !important;
+}
+
+.paidyes {
+	color:#62c462;
+}
+
+.paidno {
+	color:#ee5f5b;
+}
+
+.paidover {
+	color:#62b6c4;
+}
+
+.paidpartial {
+	color:#eea05b;
+}
+
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px)  {
+	#users-total, #expenses-total {
+		text-align: center;
+	}
+
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	table {
+		background-color:rgba(0,0,0,0) !important;
+		table-layout:fixed;
+	}
+
+	thead tr { 
+		display:none;
+	}
+	
+	tr { 
+		border: 1px solid #292929;
+		margin-bottom:15px;
+		background-color: #1a1b1d9c !important;
+		-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+		-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+		box-shadow: 5px 10px 5px 0px rgba(0,0,0,0.75);
+		border-radius: 5px;
+	}
+
+	td { 
+		border: none !important;
+	}
+	
+	td:before { 
+		padding-right: 3px; 
+		font-weight: bold;
+	}
+	
+	td:nth-of-type(1) {
+		    background-color: black;
+			border-radius: 5px 5px 0px 0px;
+			text-align:center;
+	}
+	
+	#user-table td:nth-of-type(2):before { content: "Plans:"; }
+	#user-table td:nth-of-type(3):before { content: "Charge:"; }
+	#user-table td:nth-of-type(4):before { content: "Paid this Month:"; }
+	#user-table td:nth-of-type(5):before { content: "Fully Paid:"; }
+	#user-table td:nth-of-type(6):before { content: "Last Payment Date: "; }
+	
+	#plan-table td:nth-of-type(2):before { content: "Cost:"; }
+	#plan-table td:nth-of-type(3):before { content: "Details:"; display: block; }
+	
+	.expense-table td:nth-of-type(2):before { content: "Monthly Cost:"; }
+	.expense-table td:nth-of-type(3):before { content: "Monthly Cost (GBP):"; }
+	.expense-table td:nth-of-type(4):before { content: "Payment Due Date:"; }
+}
+
+.active-0 { 
+	display:none;
+	background: #8e2e2e !important;
+}
+
+.cbutton {
+    border-radius: 3px;
+    border: 4px solid;
+    padding: 0px;
+    width: auto;
+    height: auto;
+    position: relative;
+    text-align: center;
+    margin: 0px;
+}
+
+.panel-body ol>li {
+    margin-bottom: 5px;
+}
+
+.cbutton:hover { opacity: .8; }
+.cbuttontitle  { color: #fff; }
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    background: transparent;
+    box-shadow: none !important;
+    transition: all .4s ease-in-out;
+    cursor: pointer
+}
+
+/* -------------------Small widget------------------- */
+.flex-child { padding: 3px; flex-grow: 1; flex-basis: 0;}
+#grafanadwidget { position: relative; height: calc(80px); width: calc(100%);}
+/* -------------------Small widget------------------- */
+
+/* -------------------Big widget------------------- */
+.flex-child-big { padding: 3px; flex-grow: 1; flex-basis: 0;}
+#grafanadwidget-big { position: relative; height: calc(250px); width: calc(100%);}
+/* -------------------Big widget------------------- */
+
+/* -------------------iFrame Link------------------- */
+.iframe-link { z-index:1; position:absolute; height: calc(80px); width: calc(100%); background-color: transparent; cursor: pointer}
+/* -------------------iFrame Link------------------- */
+
+#announcementRow { background-color:transparent !important;}
+#announcementRow>h4 {
+    padding-left: 15px;
+    font-family: Rubik,sans-serif;
+    margin: 10px 0;
+    font-weight: 300 !important;
+    line-height: 22px;
+    font-size: 18px;
+    color: #dce2ec;
+}
+.overflowhider { height: 100%; overflow: hidden;}
+@media only screen and (max-width: 650px) {.flex-child-big {flex-basis: auto;min-width: auto !important;}}
+@media only screen and (max-width: 1125px) {.flex-child-big {flex-basis: auto;min-width: 600px;flex-basis: fit-content;}}
+@media only screen and (max-width: 1649px) {.flex-child {flex-basis: auto;}}

@@ -1,0 +1,122 @@
+#########################################################################
+# Title:         Cloudbox: Custom Admin Panel / Starling API Role       #
+# Author(s):     Fma965                                                 #
+# URL:           https://github.com/Fma965/Cloudbox                     #
+# Docker Image:  linuxserver/nginx                                      #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare Panel DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: panel
+  when: cloudflare_enabled
+
+- name: "Setting CloudFlare API DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: api
+  when: cloudflare_enabled
+
+- name: Create nginx directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/panel
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: panel
+    state: absent
+
+- name: Create and start container
+  docker_container:
+    name: panel
+    image: linuxserver/nginx
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/panel:/config"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.api.rule": "Host(`api.{{ user.domain }}`)"
+      "traefik.http.routers.api.service":	"api"
+      "traefik.http.routers.api.tls":	"true"
+      "traefik.http.routers.panel.middlewares":	"oauth-owner@file"
+      "traefik.http.routers.panel.rule": "Host(`panel.{{ user.domain }}`)"
+      "traefik.http.routers.panel.service":	"panel"
+      "traefik.http.routers.panel.tls":	"true"
+      "traefik.http.services.api.loadbalancer.server.port":	"80"
+      "traefik.http.services.panel.loadbalancer.server.port":	"80"
+    networks:
+      - name: cloudbox
+        aliases:
+          - panel
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started
+
+- name: Check if API files already exist
+  stat:
+    path: "/opt/api/nginx/site-confs/api"
+  register: api_config
+
+- name: Import API files if they don't already exist
+  block:
+  - name: Wait for default vhost to be created
+    wait_for:
+      path: "/opt/api/nginx/site-confs/default"
+      state: present
+
+  - name: Stop container to override config / files
+    docker_container:
+      name: panel
+      state: stopped
+
+  - name: "Import default.j2"
+    template:
+      src: default.j2
+      dest: /opt/panel/nginx/site-confs/default
+      mode: 0775
+      force: yes
+
+  - name: "Import api.j2"
+    template:
+      src: api.j2
+      dest: /opt/panel/nginx/site-confs/api
+      mode: 0775
+      force: yes
+  
+  - name: "Import config.php.j2"
+    template:
+      src: config.php.j2
+      dest: /opt/panel/www/config.php
+      mode: 0775
+      force: yes  
+  
+  - name: "Add www files"
+    copy:
+      src: "www/"
+      dest: "/opt/panel/www/"
+      owner: "{{ user.name }}"
+      group: "{{ user.name }}"
+      mode: 0775
+      force: yes
+
+  - name: Restart container
+    docker_container:
+      name: panel
+      state: started
+  when: not api_config.stat.exists

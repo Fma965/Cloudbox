@@ -1,0 +1,29 @@
+<?php
+	if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+		die('Direct access not allowed');
+		exit();
+	};
+
+	// Database Credentials
+	$db_host		= "mariadb";
+	$db_user		= "starling";
+	$db_pass		= "{{ starling.db_pass }}";
+	$db_database	= "starling"; 
+	
+	// Starling Configuration
+	$secret = "{{ starling.secret }}"; 
+	$token = "{{ starling.token }}";
+	$starlingaccount = "{{ starling.account_url }}";
+	
+	// Other Configuration Options
+	$startdate = 1;
+	$finishdate = 31;
+	
+	// Establish DB connection
+	$con = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
+	if (mysqli_connect_errno()) {
+		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	}
+	
+	error_reporting(E_ALL^E_NOTICE);
+?>

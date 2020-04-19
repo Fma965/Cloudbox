@@ -5,6 +5,11 @@ http:
       service: radarrapi@file
       priority: 100
       tls: {}
+    radarrapi:
+      rule: Host(`radarr4k.{{ user.domain }}`) && PathPrefix(`/api`)
+      service: radarr4kapi@file
+      priority: 100
+      tls: {}
     sonarrapi:
       rule: Host(`sonarr.{{ user.domain }}`) && PathPrefix(`/api`)
       service: sonarrapi@file
@@ -33,6 +38,10 @@ http:
       loadBalancer:
         servers:
           - url: http://radarr:7878
+    radarr4kapi:
+      loadBalancer:
+        servers:
+          - url: http://radarr4k:7879
     sonarrapi:
       loadBalancer:
         servers:

@@ -52,10 +52,10 @@
     - { role: jdownloader2, tags: ['jdownloader2', 'coolflix'] }
     - { role: synclounge, tags: ['synclounge', 'coolflix'] }
     - { role: handbrake, tags: ['handbrake', 'coolflix'] }
-    - { role: grafana, tags: ['grafana', 'coolflix'] }
-    - { role: influxdb, tags: ['influxdb', 'coolflix'] }
     - { role: varken, tags: ['varken', 'coolflix'] }
-    - { role: telegraf, tags: ['telegraf', 'coolflix'] }
+    - { role: grafana, tags: ['grafana'] }
+    - { role: influxdb, tags: ['influxdb'] }
+    - { role: telegraf, tags: ['telegraf'] }
     - { role: mellow, tags: ['mellow', 'coolflix'] }
     - { role: monitorr, tags: ['monitorr', 'coolflix'] }
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn', 'coolflix'] }

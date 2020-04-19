@@ -33,15 +33,13 @@
     - /opt/zerotier/zerotier-one
     - /opt/zerotier/ztncui
 
-# - name: Create ztncui volume
-#   docker_volume:
-#     name: ztncui
-
 - name: Create and start container
   docker_container:
     name: zerotier
     image: keynetworks/ztncui
     pull: yes
+    published_ports:
+      - "127.0.0.1:3000:3000"
     env:
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"

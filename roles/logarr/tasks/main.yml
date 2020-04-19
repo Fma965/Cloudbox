@@ -1,0 +1,75 @@
+#########################################################################
+# Title:            Community: Logarr                                   #
+# Author(s):        Superduper09, Kalroth, RXWatcher                    #
+# URL:              https://github.com/Cloudbox/Community               #
+# Docker Image(s):  monitorr/logarr-alpha                               #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: logarr
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: logarr
+    state: absent
+
+- name: Create logarr directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/logarr
+    - /opt/logarr/config
+    - /opt/logarr/config/userdata
+
+- name: "Check if config.json file exists"
+  stat:
+    path: "/opt/logarr/config/userdata/config.json
+"
+  register: config_env
+
+- name: "Import config file if it doesnt exist"
+  template:
+    src: config.json.j2
+    dest: /opt/logarr/config/userdata/config.json
+    force: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not config_env.stat.exists
+
+- name: Create and start container
+  docker_container:
+    name: logarr
+    image: monitorr/logarr-alpha:latest
+    pull: yes
+    env:
+      TZ: "{{ tz }}"
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+    volumes:
+      - "/opt/logarr/config:/app"
+      - "/opt:/opt"
+      - "/mnt:/mnt"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.logarr.tls": "true"
+      "traefik.http.routers.logarr.middlewares": "oauth-coadmin@file"
+    networks:
+      - name: cloudbox
+        aliases:
+          - logarr
+    restart_policy: unless-stopped
+    state: started

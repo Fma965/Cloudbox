@@ -38,7 +38,7 @@
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.netdata.tls": "true"
-      "traefik.http.routers.netdata.tls": "oauth-coadmin@file"
+      "traefik.http.routers.netdata.middlewares": "oauth-coadmin@file"
     networks:
       - name: cloudbox
         aliases:

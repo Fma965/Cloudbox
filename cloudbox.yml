@@ -17,7 +17,7 @@
     - { role: system, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'system', 'coolflix'] }
     - { role: common, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'common', 'coolflix'] }
     - { role: aliases, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'aliases', 'coolflix'] }
-    - { role: motd, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'motd', 'coolflix'] }
+  #  - { role: motd, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'motd', 'coolflix'] }
     - { role: docker, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'docker', 'coolflix'] }
     - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override', 'coolflix'], when: ['use_remote'] }
     - { role: unionfs, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override', 'coolflix'] }

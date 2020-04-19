@@ -94,32 +94,34 @@
     restart_policy: unless-stopped
     state: started
 
-- name: Wait for 
-  wait_for:
-    path: "/opt/qbittorrentvpn/openvpn/credentials.conf"
-    state: present
-
-- name: Stop qBittorrentVPN Container
-  docker_container:
-    name: qbittorrentvpn
-    state: stopped
-
 - name: Check if '/opt/qbittorrentvpn/openvpn/pia.ovpn' exists
   stat:
     path: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
   register: vpn_file
 
-- name: "Copy PIA DE Frankfurt OpenVPN file"
-  copy:
-    src: "DE Frankfurt.ovpn"
-    dest: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-    force: yes
-  when: (not vpn_file.stat.exists)
+- name: Copy VPN file if it doesn't already exist
+  block:
+  - name: Wait for  
+    wait_for:
+      path: "/opt/qbittorrentvpn/openvpn"
+      state: present
 
-- name: Start qBittorrentVPN Container
-  docker_container:
-    name: qbittorrentvpn
-    state: started
+  - name: Stop qBittorrentVPN Container
+    docker_container:
+      name: qbittorrentvpn
+      state: stopped
+
+  - name: "Copy PIA DE Frankfurt OpenVPN file"
+    copy:
+      src: "DE Frankfurt.ovpn"
+      dest: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
+      owner: "{{ user.name }}"
+      group: "{{ user.name }}"
+      mode: 0775
+      force: yes
+
+  - name: Start qBittorrentVPN Container
+    docker_container:
+      name: qbittorrentvpn
+      state: started
+  when: (not vpn_file.stat.exists)

@@ -52,7 +52,7 @@
     - { role: jdownloader2, tags: ['jdownloader2', 'coolflix'] }
     - { role: synclounge, tags: ['synclounge', 'coolflix'] }
     - { role: handbrake, tags: ['handbrake', 'coolflix'] }
-    - { role: grafana, tags: ['grafana, 'coolflix'] }
+    - { role: grafana, tags: ['grafana', 'coolflix'] }
     - { role: influxdb, tags: ['influxdb', 'coolflix'] }
     - { role: varken, tags: ['varken', 'coolflix'] }
     - { role: telegraf, tags: ['telegraf', 'coolflix'] }

@@ -47,6 +47,8 @@
     name: monitorr
     image: monitorr/monitorr:develop
     pull: yes
+    published_ports:
+      - "127.0.0.1:8543:80/tcp"
     env:
       TZ: "{{ tz }}"
       PUID: "{{ uid }}"

@@ -24,14 +24,12 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: 0777
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     recurse: yes
   with_items:
     - /opt/zerotier
-    - /opt/zerotier/zerotier-one
-    - /opt/zerotier/ztncui
 
 - name: Create and start container
   docker_container:

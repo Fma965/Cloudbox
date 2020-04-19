@@ -12,7 +12,7 @@
     - { role: restore, tags: ['restore'] }
     - { role: kernel, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'kernel', 'coolflix'] }
     - { role: user, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'user', 'coolflix'] }
-    - { role: shell, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'shell'#, 'coolflix'] }
+    - { role: shell, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'shell', 'coolflix'] }
     - { role: rclone, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'rclone', 'coolflix'] }
     - { role: system, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'system', 'coolflix'] }
     - { role: common, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'common', 'coolflix'] }

@@ -120,10 +120,20 @@
       mode: 0775
       force: yes
 
+  - name: Start qBittorrentVPN Container
+    docker_container:
+      name: qbittorrentvpn
+      state: started
+
   - name: Wait for qBittorrent.conf file to be created
     wait_for:
       path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
       state: present
+
+  - name: Stop qBittorrentVPN Container
+    docker_container:
+      name: qbittorrentvpn
+      state: stopped
 
   - name: Ensure "WebUI\AuthSubnetWhitelist=172.18.0.0/16" is in section "[Preferences]" in specified file
     ini_file:

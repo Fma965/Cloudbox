@@ -12,7 +12,7 @@
   include_role:
     name: cloudflare-dns
   vars:
-    subdomain: "{{ plex_subdomain }}"
+    subdomain: "plex"
   when: cloudflare_enabled
 
 - name: "Create Plex directories"
@@ -23,16 +23,20 @@
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     recurse: yes
-  with_items: "{{ plex_folders }}"
+  with_items:
+    - "/opt/plex"
+    - "/opt/plex/Library"
+    - "/opt/plex/Library/Application Support"
+    - "/opt/plex/Library/Application Support/Plex Media Server"
+    - "/opt/plex/Library/Application Support/Plex Media Server/Plug-ins"
+    - "/opt/plex/Library/Logs"
+    - "/opt/plex/Library/Logs/Plex Media Server"
+    - "{{ plex.transcodes }}/plex"
 
 - name: "Stop and remove any existing container"
   docker_container:
     name: plex
     state: absent
-
-- name: "Pull Plex Docker image"
-  docker_image:
-    name: "{{ plex_docker_image }}"
 
 - name: "Check if '/dev/dri' exists"
   stat:
@@ -46,9 +50,18 @@
 - name: "Create and start container"
   docker_container:
     name: plex
-    image: "{{ plex_docker_image }}"
+    image: "cloudb0x/plex:{{ plex.tag }}"
     pull: yes
-    published_ports: "{{ plex_docker_ports }}"
+    published_ports:
+      - "127.0.0.1:32400:32400/tcp"
+      - "127.0.0.1:3005:3005/tcp"
+      - "127.0.0.1:8324:8324/tcp"
+      - "127.0.0.1:32469:32469/tcp"
+      - "127.0.0.1:1900:1900/udp"
+      - "127.0.0.1:32410:32410/udp"
+      - "127.0.0.1:32412:32412/udp"
+      - "127.0.0.1:32413:32413/udp"
+      - "127.0.0.1:32414:32414/udp"
     env:
       PLEX_UID: "{{ uid }}"
       PLEX_GID: "{{ gid }}"
@@ -59,9 +72,20 @@
       NVIDIA_DRIVER_CAPABILITIES: "{{ 'compute,video,utility' if (gpu.nvidia.enabled) | default(false) else omit }}"
       NVIDIA_VISIBLE_DEVICES: "{{ 'all' if (gpu.nvidia.enabled) | default(false) else omit }}"
       TZ: "{{ tz }}"
-    volumes: "{{ plex_docker_volumes }}"
+    volumes:
+      - "/opt/plex"
+      - "/opt/plex/Library"
+      - "/opt/plex/Library/Application Support"
+      - "/opt/plex/Library/Application Support/Plex Media Server"
+      - "/opt/plex/Library/Application Support/Plex Media Server/Plug-ins"
+      - "/opt/plex/Library/Logs"
+      - "/opt/plex/Library/Logs/Plex Media Server"
+      - "{{ plex.transcodes }}/plex"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
-    etc_hosts: "{{ plex_docker_hosts }}"
+    etc_hosts:
+      "metric.plex.tv": "127.0.0.1"
+      "metrics.plex.tv": "127.0.0.1"
+      "analytics.plex.tv": "127.0.0.1"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.plex.tls": "true"

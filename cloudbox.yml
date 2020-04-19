@@ -19,7 +19,7 @@
     - { role: aliases, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'aliases', 'coolflix'] }
     - { role: motd, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'motd', 'coolflix'] }
     - { role: docker, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'docker', 'coolflix'] }
-    - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override, 'coolflix'], when: ['use_remote'] }
+    - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override', 'coolflix'], when: ['use_remote'] }
     - { role: unionfs, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override', 'coolflix'] }
     - { role: scripts, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'scripts', 'coolflix'] }
     - { role: traefik, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'traefik', 'coolflix'] }

@@ -70,7 +70,7 @@
 
 - name: Check if API files already exist
   stat:
-    path: "/opt/api/nginx/site-confs/api"
+    path: "/opt/panel/nginx/site-confs/api"
   register: api_config
 
 - name: Import API files if they don't already exist

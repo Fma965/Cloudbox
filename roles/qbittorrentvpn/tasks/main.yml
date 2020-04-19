@@ -126,7 +126,7 @@
       section: "Preferences"
       option: "WebUI\\AuthSubnetWhitelist"
       value: "172.18.0.0/16"
-      mode: "preserve"
+      mode: preserve
 
   - name: Ensure "WebUI\AuthSubnetWhitelistEnabled=true" is in section "[Preferences]" in specified file
     ini_file:
@@ -134,7 +134,7 @@
       section: "Preferences"
       option: "WebUI\\AuthSubnetWhitelistEnabled"
       value: "true"
-      mode: "preserve"
+      mode: preserve
 
   - name: Start qBittorrentVPN Container
     docker_container:

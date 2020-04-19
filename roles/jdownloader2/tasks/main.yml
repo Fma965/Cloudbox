@@ -72,7 +72,6 @@
       TZ: "{{ tz }}"
       DISPLAY_WIDTH: "1920"
       DISPLAY_HEIGHT: "1080"
-      VNC_PASSWORD: "{{ user.pass }}"
       USER_ID: "{{ uid }}"
       GROUP_ID: "{{ gid }}"
       CLEAN_TMP_DIR: "1"

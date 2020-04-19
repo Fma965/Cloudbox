@@ -20,7 +20,6 @@ pia:
 maxmind:
   key:
 starling: 
-  db_pass:
   secret:
   token:
   account_url:

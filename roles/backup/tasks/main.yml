@@ -182,7 +182,7 @@
         torrent_apps:
           - deluge
           - delugevpn
-          - qbittorrent
+          - qbittorrentvpn
           - rutorrent
 
     - name: Filter out ignored apps from Docker containers list
@@ -514,7 +514,6 @@
      - "ansible.cfg"
      - "accounts.yml"
      - "settings.yml"
-     - "adv_settings.yml"
      - "backup_config.yml"
      - "rclone.conf"
      - "backup_excludes.txt"

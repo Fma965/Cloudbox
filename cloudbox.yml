@@ -3,7 +3,6 @@
   vars_files:
     - ['accounts.yml', 'defaults/accounts.yml.default']
     - ['settings.yml', 'defaults/settings.yml.default']
-    - ['adv_settings.yml', 'defaults/adv_settings.yml.default']
     - ['backup_config.yml', 'defaults/backup_config.yml.default']
   roles:
     - { role: sanity_check, tags: ['sanity_check'] }
@@ -11,60 +10,62 @@
     - { role: pre_tasks, tags: ['pre_tasks'] }
     - { role: backup, tags: ['backup'] }
     - { role: restore, tags: ['restore'] }
-    - { role: kernel, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'kernel'] }
-    - { role: user, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'user'] }
-    - { role: shell, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'shell'] }
-    - { role: rclone, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'rclone'] }
-    - { role: system, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'system'] }
-    - { role: common, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'common'] }
-    - { role: aliases, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'aliases'] }
-    - { role: motd, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'motd'] }
-    - { role: docker, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'docker'] }
-    - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override'], when: ['use_remote'] }
-    - { role: unionfs, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override'] }
-    - { role: scripts, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'scripts'] }
-    - { role: traefik, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'traefik'] }
-    - { role: plex, tags: ['cloudbox', 'mediabox', 'plex'] }
-    - { role: plexpy, tags: ['cloudbox', 'mediabox', 'plexpy'] }
-    - { role: ombi, tags: ['cloudbox', 'mediabox', 'ombi'] }
-    - { role: plex_autoscan, tags: ['cloudbox', 'mediabox', 'plex_autoscan'] }
-    - { role: portainer, tags: ['cloudbox', 'feederbox', 'portainer'] }
-    - { role: organizr, tags: ['cloudbox', 'feederbox', 'organizr'] }
-    - { role: cloudplow, tags: ['cloudbox', 'feederbox', 'cloudplow'], when: ['use_remote'] }
-    - { role: nzbget, tags: ['cloudbox', 'feederbox', 'nzbget'], when: ['use_nzbs'] }
-    - { role: jackett, tags: ['cloudbox', 'feederbox', 'jackett'], when: ['use_torrents'] }
-    - { role: nzbhydra2, tags: ['cloudbox', 'feederbox', 'nzbhydra2'], when: ['use_nzbs'] }
-    - { role: sonarr, tags: ['cloudbox', 'feederbox', 'sonarr'] }
-    - { role: radarr, tags: ['cloudbox', 'feederbox', 'radarr'] }
-    - { role: lidarr, tags: ['cloudbox', 'feederbox', 'lidarr'] }
-    - { role: plex_auth_token, tags: ['plex_auth_token'] }
-    - { role: trakttv-plugin, tags: ['trakttv-plugin'] }
-    - { role: watchtower, tags: ['watchtower'] }
-    - { role: nextcloud, tags: ['nextcloud'] }
-    - { role: mariadb, tags: ['mariadb'] }
-    - { role: traktarr, tags: ['traktarr'] }
-    - { role: plex_dupefinder, tags: ['plex_dupefinder'] }
-    - { role: netdata, tags: ['netdata'] }
-    - { role: plex_patrol, tags: ['plex_patrol'] }
-    - { role: nowshowing, tags: ['nowshowing'] }
-    - { role: bazarr, tags: ['bazarr'] }
+    - { role: kernel, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'kernel', 'coolflix'] }
+    - { role: user, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'user', 'coolflix'] }
+    - { role: shell, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'shell, 'coolflix''] }
+    - { role: rclone, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'preinstall', 'rclone, 'coolflix''] }
+    - { role: system, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'system, 'coolflix''] }
+    - { role: common, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'common, 'coolflix''] }
+    - { role: aliases, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'aliases, 'coolflix''] }
+    - { role: motd, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'motd, 'coolflix''] }
+    - { role: docker, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'docker, 'coolflix''] }
+    - { role: remote, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override, 'coolflix''], when: ['use_remote'] }
+    - { role: unionfs, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'mounts', 'mounts_override', 'coolflix'] }
+    - { role: scripts, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'scripts', 'coolflix'] }
+    - { role: traefik, tags: ['core', 'cloudbox', 'mediabox', 'feederbox', 'traefik', 'coolflix'] }
+    - { role: plex, tags: ['cloudbox', 'mediabox', 'plex', 'coolflix'] }
+    - { role: plexpy, tags: ['cloudbox', 'mediabox', 'plexpy', 'coolflix'] }
+    - { role: ombi, tags: ['cloudbox', 'mediabox', 'ombi', 'coolflix'] }
+    - { role: plex_autoscan, tags: ['cloudbox', 'mediabox', 'plex_autoscan', 'coolflix'] }
+    - { role: portainer, tags: ['cloudbox', 'feederbox', 'portainer', 'coolflix'] }
+    - { role: organizr, tags: ['cloudbox', 'feederbox', 'organizr', 'coolflix'] }
+    - { role: cloudplow, tags: ['cloudbox', 'feederbox', 'cloudplow', 'coolflix'], when: ['use_remote'] }
+    - { role: nzbget, tags: ['cloudbox', 'feederbox', 'nzbget', 'coolflix'], when: ['use_nzbs'] }
+    - { role: jackett, tags: ['cloudbox', 'feederbox', 'jackett', 'coolflix'], when: ['use_torrents'] }
+    - { role: nzbhydra2, tags: ['cloudbox', 'feederbox', 'nzbhydra2', 'coolflix'], when: ['use_nzbs'] }
+    - { role: sonarr, tags: ['cloudbox', 'feederbox', 'sonarr', 'coolflix'] }
+    - { role: radarr, tags: ['cloudbox', 'feederbox', 'radarr', 'coolflix'] }
+    - { role: lidarr, tags: ['cloudbox', 'feederbox', 'lidarr', 'coolflix'] }
+    - { role: mariadb, tags: ['mariadb', 'coolflix'] }
+    - { role: plex_auth_token, tags: ['plex_auth_token', 'coolflix'] }
+    - { role: trakttv-plugin, tags: ['trakttv-plugin', 'coolflix'] }
+    - { role: watchtower, tags: ['watchtower', 'coolflix'] }
+    - { role: nextcloud, tags: ['nextcloud', 'coolflix'] }
+    - { role: traktarr, tags: ['traktarr', 'coolflix'] }
+    - { role: plex_dupefinder, tags: ['plex_dupefinder', 'coolflix'] }
+    - { role: netdata, tags: ['netdata', 'coolflix'] }
     - { role: nginx, tags: ['nginx'] }
-    - { role: nzbthrottle, tags: ['nzbthrottle'] }
-    - { role: community, tags: ['community'] }
+    - { role: nzbthrottle, tags: ['nzbthrottle', 'coolflix'] }
+
     # --- Custom roles added by Fma965 for Coolflix ---
-    - { role: plex-ldap, tags: ['plex-ldap'] }
-    - { role: jdownloader2, tags: ['jdownloader2'] }
-    - { role: synclounge, tags: ['synclounge'] }
-    - { role: handbrake, tags: ['handbrake'] }
-    - { role: grafana, tags: ['grafana'] }
-    - { role: influxdb, tags: ['influxdb'] }
-    - { role: varken, tags: ['varken'] }
-    - { role: telegraf, tags: ['telegraf'] }
-    - { role: mellow, tags: ['mellow'] }
-    - { role: monitorr, tags: ['monitorr'] }
-    - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
-    - { role: radarr4k, tags: ['radarr4k'] }
-    - { role: radarrsync, tags: ['radarrsync'] }
-    - { role: panel, tags: ['starling', 'panel', 'api'] }
-    - { role: zerotier, tags: ['zerotier'] }
-    - { role: logarr, tags: ['logarr'] }
+    - { role: plex-ldap, tags: ['plex-ldap', 'coolflix'] }
+    - { role: jdownloader2, tags: ['jdownloader2', 'coolflix'] }
+    - { role: synclounge, tags: ['synclounge', 'coolflix'] }
+    - { role: handbrake, tags: ['handbrake', 'coolflix'] }
+    - { role: grafana, tags: ['grafana, 'coolflix''] }
+    - { role: influxdb, tags: ['influxdb', 'coolflix'] }
+    - { role: varken, tags: ['varken', 'coolflix'] }
+    - { role: telegraf, tags: ['telegraf', 'coolflix'] }
+    - { role: mellow, tags: ['mellow', 'coolflix'] }
+    - { role: monitorr, tags: ['monitorr', 'coolflix'] }
+    - { role: qbittorrentvpn, tags: ['qbittorrentvpn', 'coolflix'] }
+    - { role: radarr4k, tags: ['radarr4k', 'coolflix'] }
+    - { role: radarrsync, tags: ['radarrsync', 'coolflix'] }
+    - { role: panel, tags: ['starling', 'panel', 'api', 'coolflix'] }
+    - { role: zerotier, tags: ['zerotier', 'coolflix'] }
+    - { role: logarr, tags: ['logarr', 'coolflix'] }
+
+    # --- Disabled roles from stock Cloudbox install ---
+#    - { role: plex_patrol, tags: ['plex_patrol'] }
+#    - { role: nowshowing, tags: ['nowshowing'] }
+#    - { role: bazarr, tags: ['bazarr'] }

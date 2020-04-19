@@ -86,13 +86,14 @@
       - "/opt/traefik/logs:/var/log/traefik"
       - "/opt/traefik/data:/etc/traefik"
     labels:
-      traefik.http.routers.traefik.middlewares: "oauth-coadmin@file"
-      traefik.http.routers.traefik.rule: "Host(`traefik.{{ user.domain }}`)"
-      traefik.http.routers.traefik.service: "api@internal"
-      traefik.http.routers.traefik.tls: "true"
-      traefik.http.routers.traefik.tls.certresolver: "cloudflare"
-      traefik.http.routers.traefik.tls.domains[0].main: "{{ user.domain }}"
-      traefik.http.routers.traefik.tls.domains[0].sans: "*.{{ user.domain }}"
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.traefik.middlewares": "oauth-coadmin@file"
+      "traefik.http.routers.traefik.rule": "Host(`traefik.{{ user.domain }}`)"
+      "traefik.http.routers.traefik.service": "api@internal"
+      "traefik.http.routers.traefik.tls": "true"
+      "traefik.http.routers.traefik.tls.certresolver": "cloudflare"
+      "traefik.http.routers.traefik.tls.domains[0].main": "{{ user.domain }}"
+      "traefik.http.routers.traefik.tls.domains[0].sans": "*.{{ user.domain }}"
     networks:
       - name: cloudbox  
         aliases:

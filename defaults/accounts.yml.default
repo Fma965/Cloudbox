@@ -23,4 +23,5 @@ starling:
   secret:
   token:
   account_url:
+  db_pass:
 apprise:

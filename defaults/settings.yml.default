@@ -13,8 +13,6 @@ plex:
 rclone:
   version: latest
   remote: google
-starling: 
-  db_pass:
 shell: zsh
 system:
   timezone: Europe/London

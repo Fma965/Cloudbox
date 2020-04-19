@@ -101,63 +101,62 @@
 
 - name: Copy VPN file if it doesn't already exist
   block:
-  - name: Wait for openvpn folder to be created
-    wait_for:
-      path: "/opt/qbittorrentvpn/openvpn"
-      state: present
+    - name: Wait for openvpn folder to be created
+      wait_for:
+        path: "/opt/qbittorrentvpn/openvpn"
+        state: present
 
-  - name: Stop qBittorrentVPN Container
-    docker_container:
-      name: qbittorrentvpn
-      state: stopped
+    - name: Stop qBittorrentVPN Container
+      docker_container:
+        name: qbittorrentvpn
+        state: stopped
 
-  - name: "Copy PIA DE Frankfurt OpenVPN file"
-    copy:
-      src: "DE Frankfurt.ovpn"
-      dest: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
-      owner: "{{ user.name }}"
-      group: "{{ user.name }}"
-      mode: 0775
-      force: yes
+    - name: "Copy PIA DE Frankfurt OpenVPN file"
+      copy:
+        src: "DE Frankfurt.ovpn"
+        dest: "/opt/qbittorrentvpn/openvpn/pia.ovpn"
+        owner: "{{ user.name }}"
+        group: "{{ user.name }}"
+        mode: 0775
+        force: yes
 
-  - name: Start qBittorrentVPN Container
-    docker_container:
-      name: qbittorrentvpn
-      state: started
+    - name: Start qBittorrentVPN Container
+      docker_container:
+        name: qbittorrentvpn
+        state: started
   when: (not vpn_file.stat.exists)
 
-  - name: Wait for qBittorrent.conf file to be created
-    wait_for:
-      path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
-      state: present
+- name: Wait for qBittorrent.conf file to be created
+  wait_for:
+    path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
+    state: present
 
-  - name: Stop qBittorrentVPN Container
-    docker_container:
-      name: qbittorrentvpn
-      state: stopped
+- name: Stop qBittorrentVPN Container
+  docker_container:
+    name: qbittorrentvpn
+    state: stopped
 
-  - name: Ensure "WebUI\AuthSubnetWhitelist=172.18.0.0/16" is in section "[Preferences]" in specified file
-    ini_file:
-      path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
-      section: "Preferences"
-      option: "WebUI\\AuthSubnetWhitelist"
-      value: "172.18.0.0/16"
-      owner: "{{ user.name }}"
-      group: "{{ user.name }}"
-      mode: 0664
+- name: Ensure "WebUI\AuthSubnetWhitelist=172.18.0.0/16" is in section "[Preferences]" in specified file
+  ini_file:
+    path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
+    section: "Preferences"
+    option: "WebUI\\AuthSubnetWhitelist"
+    value: "172.18.0.0/16"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
 
-  - name: Ensure "WebUI\AuthSubnetWhitelistEnabled=true" is in section "[Preferences]" in specified file
-    ini_file:
-      path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
-      section: "Preferences"
-      option: "WebUI\\AuthSubnetWhitelistEnabled"
-      value: "true"
-      owner: "{{ user.name }}"
-      group: "{{ user.name }}"
-      mode: 0664
+- name: Ensure "WebUI\AuthSubnetWhitelistEnabled=true" is in section "[Preferences]" in specified file
+  ini_file:
+    path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
+    section: "Preferences"
+    option: "WebUI\\AuthSubnetWhitelistEnabled"
+    value: "true"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0664
 
-  - name: Start qBittorrentVPN Container
-    docker_container:
-      name: qbittorrentvpn
-      state: started
-  when: (not vpn_file.stat.exists)
+- name: Start qBittorrentVPN Container
+  docker_container:
+    name: qbittorrentvpn
+    state: started

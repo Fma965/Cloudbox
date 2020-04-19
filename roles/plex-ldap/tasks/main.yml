@@ -19,7 +19,7 @@
 
 - name: "Get Plex machineIdentifier and friendlyName"
   uri:
-    url: "https://127.0.0.1/?X-Plex-Token={{ plex_auth_token }}"
+    url: "http://127.0.0.1:32400/?X-Plex-Token={{ plex_auth_token }}"
     validate_certs: no
     return_content: yes
   register: plex_details_raw

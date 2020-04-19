@@ -75,9 +75,9 @@
 
 - name: Import API files if they don't already exist
   block:
-  - name: Wait for default vhost to be created
+  - name: Wait for '/opt/panel/nginx/site-confs/default' to be created
     wait_for:
-      path: "/opt/api/nginx/site-confs/default"
+      path: "/opt/panel/nginx/site-confs/default"
       state: present
 
   - name: Stop container to override config / files

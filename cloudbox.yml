@@ -65,3 +65,4 @@
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn'] }
     - { role: radarr4k, tags: ['radarr4k'] }
     - { role: radarrsync, tags: ['radarrsync'] }
+    - { role: panel, tags: ['starling', 'panel', 'api'] }

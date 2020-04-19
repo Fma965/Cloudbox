@@ -58,8 +58,8 @@
       "traefik.http.routers.panel.rule": "Host(`panel.{{ user.domain }}`)"
       "traefik.http.routers.panel.service": "panel"
       "traefik.http.routers.panel.tls": "true"
-      "traefik.http.services.api.loadbalancer.server.port":	"80"
-      "traefik.http.services.panel.loadbalancer.server.port":	"80"
+      "traefik.http.services.api.loadbalancer.server.port": "80"
+      "traefik.http.services.panel.loadbalancer.server.port": "80"
     networks:
       - name: cloudbox
         aliases:

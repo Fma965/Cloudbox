@@ -124,6 +124,7 @@
     docker_container:
       name: qbittorrentvpn
       state: started
+  when: (not vpn_file.stat.exists)
 
   - name: Wait for qBittorrent.conf file to be created
     wait_for:

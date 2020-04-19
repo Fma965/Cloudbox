@@ -101,7 +101,7 @@
 
 - name: Copy VPN file if it doesn't already exist
   block:
-  - name: Wait for  
+  - name: Wait for openvpn folder to be completed
     wait_for:
       path: "/opt/qbittorrentvpn/openvpn"
       state: present

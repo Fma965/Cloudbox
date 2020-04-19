@@ -1,0 +1,61 @@
+#########################################################################
+# Title:         CoolFlix: ZeroTier + Ztncui                            #
+# Author(s):     Fma965                                                 #
+# URL:           https://github.com/Fma965/Cloudbox                     #
+# Docker Image:  keynetworks/ztncui                                     #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Setting CloudFlare Panel DNS Record"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: zerotier
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: panel
+    state: absent
+
+- name: Create zerotier directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/zerotier
+    - /opt/zerotier/zerotier-one
+    - /opt/zerotier/ztncui
+
+# - name: Create ztncui volume
+#   docker_volume:
+#     name: ztncui
+
+- name: Create and start container
+  docker_container:
+    name: zerotier
+    image: keynetworks/ztncui
+    pull: yes
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      HTTP_ALL_INTERFACES: "yes"
+    volumes:
+      - "/opt/zerotier:/var/lib/zerotier-one"
+      - "ztncui:/opt/key-networks/ztncui/etc"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.zerotier.tls": "true"
+    networks:
+      - name: cloudbox
+        aliases:
+          - zerotier
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

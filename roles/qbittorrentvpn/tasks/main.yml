@@ -128,7 +128,7 @@
       value: "172.18.0.0/16"
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
-      mode: 0775
+      mode: preserve
 
   - name: Ensure "WebUI\AuthSubnetWhitelistEnabled=true" is in section "[Preferences]" in specified file
     ini_file:
@@ -138,7 +138,7 @@
       value: "true"
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
-      mode: 0775
+      mode: preserve
 
   - name: Start qBittorrentVPN Container
     docker_container:

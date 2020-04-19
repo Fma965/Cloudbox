@@ -101,7 +101,7 @@
 
 - name: Copy VPN file if it doesn't already exist
   block:
-  - name: Wait for openvpn folder to be completed
+  - name: Wait for openvpn folder to be created
     wait_for:
       path: "/opt/qbittorrentvpn/openvpn"
       state: present
@@ -120,6 +120,11 @@
       mode: 0775
       force: yes
 
+  - name: Wait for qBittorrent.conf file to be created
+    wait_for:
+      path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
+      state: present
+
   - name: Ensure "WebUI\AuthSubnetWhitelist=172.18.0.0/16" is in section "[Preferences]" in specified file
     ini_file:
       path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
@@ -128,7 +133,7 @@
       value: "172.18.0.0/16"
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
-      mode: preserve
+      mode: 0664
 
   - name: Ensure "WebUI\AuthSubnetWhitelistEnabled=true" is in section "[Preferences]" in specified file
     ini_file:
@@ -138,7 +143,7 @@
       value: "true"
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
-      mode: preserve
+      mode: 0664
 
   - name: Start qBittorrentVPN Container
     docker_container:

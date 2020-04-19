@@ -124,7 +124,7 @@
     ini_file:
       path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
       section: "Preferences"
-      option: "WebUI\AuthSubnetWhitelist"
+      option: "WebUI\\AuthSubnetWhitelist"
       value: "172.18.0.0/16"
       mode: "preserve"
 
@@ -132,7 +132,7 @@
     ini_file:
       path: "/opt/qbittorrentvpn/qBittorrent/config/qBittorrent.conf"
       section: "Preferences"
-      option: "WebUI\AuthSubnetWhitelistEnabled"
+      option: "WebUI\\AuthSubnetWhitelistEnabled"
       value: "true"
       mode: "preserve"
 

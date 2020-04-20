@@ -13,4 +13,4 @@ readonly PLEX_CHAIN="/opt/traefik/certs/coolflix.stream/certificate.crt"
 readonly PLEX_PFX="/opt/plex/certificate.pfx"
 
 openssl pkcs12 -nodes -export -out "${PLEX_PFX}" -inkey "${PLEX_KEY}" -in "${PLEX_CHAIN}" -passout pass:test
-chmod 600 "${PLEX_PFX}"
+chmod 775 "${PLEX_PFX}"

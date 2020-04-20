@@ -76,6 +76,15 @@
     mode: 0775
     force: yes
 
+- name: Import 'plex_create_pfx.sh'
+  copy:
+    src: "plex_create_pfx.sh"
+    dest: "/opt/scripts/plex/plex_create_pfx.sh"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+    force: yes
+
 - name: Check if 'restart_containers.sh' exists
   stat:
     path: "/opt/scripts/docker/restart_containers.sh"

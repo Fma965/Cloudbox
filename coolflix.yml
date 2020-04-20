@@ -69,3 +69,5 @@
 #    - { role: plex_patrol, tags: ['plex_patrol'] }
 #    - { role: nowshowing, tags: ['nowshowing'] }
 #    - { role: bazarr, tags: ['bazarr'] }
+
+    - { role: testing, tags: ['testing', 'test'] }

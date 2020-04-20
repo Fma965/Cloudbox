@@ -24,4 +24,7 @@ starling:
   token:
   account_url:
   db_pass:
+tronitor:
+  hc_api:
+  discord_hook: 
 apprise:

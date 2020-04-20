@@ -35,6 +35,7 @@
     - /opt/scripts/plexpy
     - /opt/scripts/torrents
     - /opt/scripts/rclone
+    - /opt/scripts/other
 
 - name: Import 'TorrentCleanup.py'
   get_url:
@@ -103,3 +104,57 @@
     mode: 0775
     force: yes
   when: not restart_containers.stat.exists
+
+- name: Check if 'tronitor.sh' exists
+  stat:
+    path: "/opt/scripts/other/tronitor.sh"
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
+  register: tronitor
+
+- name: Adding tronitor.sh file
+  template:
+    src: ../templates/tronitor.sh.j2
+    dest: "/opt/scripts/other/tronitor.sh"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not tronitor.stat.exists
+
+- name: Check if 'tronitor.sh' exists
+  stat:
+    path: "/opt/scripts/other/tronitor.sh"
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
+  register: tronitor
+
+- name: Adding tronitor.sh file
+  template:
+    src: ../templates/tronitor.sh.j2
+    dest: "/opt/scripts/other/tronitor.sh"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not tronitor.stat.exists
+
+- name: Check if 'tronitor.sh' exists
+  stat:
+    path: "/opt/scripts/other/application_healthchecks.sh"
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
+  register: application_healthchecks
+
+- name: Adding application_healthchecks.sh file
+  template:
+    src: ../templates/application_healthchecks.sh.j2
+    dest: "/opt/scripts/other/application_healthchecks.sh"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 0775
+  when: not application_healthchecks.stat.exists

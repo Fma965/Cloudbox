@@ -49,3 +49,4 @@ Featured Applications:
 If you find this project helpful, feel free to make a small [donation](DONATIONS.md) to the developers.
 
 THIS IS A MODIFIED VERSION OF CLOUDBOX USED FOR COOLFLIX, THIS USES TRAEFIK RATHER THAN NGINX-PROXY AND HAS MANY OTHER TWEAKS THAT ARE MOSTLY SPECIFIC FOR MY OWN USE CASE.
+.

@@ -141,7 +141,7 @@
     mode: 0775
   when: not tronitor.stat.exists
 
-- name: Check if 'tronitor.sh' exists
+- name: Check if 'application_healthchecks.sh' exists
   stat:
     path: "/opt/scripts/other/application_healthchecks.sh"
     get_attributes: false

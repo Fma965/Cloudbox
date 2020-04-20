@@ -18,7 +18,7 @@
 
 ## Variables
 CLOUDBOX_PATH="$HOME/cloudbox"
-CLOUDBOX_REPO="https://github.com/fma965/Cloudbox.git"
+CLOUDBOX_REPO="https://github.com/fma965/CoolFlix.git"
 
 ## Clone Cloudbox and pull latest commit
 if [ -d "$CLOUDBOX_PATH" ]; then

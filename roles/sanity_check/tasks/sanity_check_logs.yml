@@ -8,15 +8,15 @@
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
-- name: Get 'cloudbox.yml' info
+- name: Get 'coolflix.yml' info
   stat:
-    path: "{{ playbook_dir }}/cloudbox.yml"
-  register: cloudbox_yml
+    path: "{{ playbook_dir }}/coolflix.yml"
+  register: coolflix_yml
 
 - name: Touch 'cloudbox.log' file
   file:
     path: "{{ playbook_dir }}/cloudbox.log"
     state: touch
-    owner: "{{ cloudbox_yml.stat.uid }}"
-    group: "{{ cloudbox_yml.stat.gid }}"
+    owner: "{{ coolflix_yml.stat.uid }}"
+    group: "{{ coolflix_yml.stat.gid }}"
     mode: 0664

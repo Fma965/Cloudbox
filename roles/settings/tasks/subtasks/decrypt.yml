@@ -22,5 +22,5 @@
 - name: "Decrypt | Decrypt '{{ file }}' when encrypted"
   shell: "ansible-vault decrypt {{ playbook_dir }}/{{ file }}"
   become: yes
-  become_user: "{{ cloudbox_yml.stat.pw_name }}"
+  become_user: "{{ coolflix_yml.stat.pw_name }}"
   when: file_is_encrypted

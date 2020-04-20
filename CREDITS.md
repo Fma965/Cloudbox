@@ -2,6 +2,7 @@
 
 ### Developers
 
+* [Fma965](https://github.com/fma965) - Modified Cloudbox base to add many other applications, converted nginx-proxy to traefik and various other tweaks.
 * [l3uddz](https://github.com/l3uddz) - Creator of Cloudbox, Plex Autoscan, Cloudplow, Traktarr, Plex Dupefinder, Plex Patrol, Arrpush, and others.
 * [desimaniac](https://github.com/desimaniac) - Cloudbox; Cloudbox Wiki; Documentation for Plex Autoscan, Cloudplow, and Traktarr.
 

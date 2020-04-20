@@ -64,7 +64,7 @@
     - { role: panel, tags: ['starling', 'panel', 'api', 'coolflix'] }
     - { role: zerotier, tags: ['zerotier', 'coolflix'] }
     - { role: logarr, tags: ['logarr', 'coolflix'] }
-
+    - { role: traefik-certs-dumper, tags: ['traefik-certs-dumper', 'coolflix'] }
     # --- Disabled roles from stock Cloudbox install ---
 #    - { role: plex_patrol, tags: ['plex_patrol'] }
 #    - { role: nowshowing, tags: ['nowshowing'] }

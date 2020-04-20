@@ -1,0 +1,21 @@
+#########################################################################
+# Title:         CoolFlix: traefik-certs-dumper Role                    #
+# Author(s):     Fma965, ldez                                           #
+# URL:           https://github.com/Fma965/CoolFlix                     #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Get latest traefik-certs-dumper URL
+  shell: curl -s https://api.github.com/repos/ldez/traefik-certs-dumper/releases/latest | jq -r ".assets[] | select(.name | test(\"linux-amd64\")) | .browser_download_url"
+  args:
+    executable: /bin/bash
+  register: tcd_download_url
+  ignore_errors: yes
+
+- name: Download and unarchive latest traefik-certs-dumper
+  unarchive:
+    src: "{{ tcd_download_url.stdout | default('"https://github.com/ldez/traefik-certs-dumper/releases/download/v2.7.0/traefik-certs-dumper_v2.7.0_darwin_amd64.tar.gz"',true) }}"
+    dest: /usr/local/bin
+    remote_src: yes

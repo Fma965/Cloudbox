@@ -17,7 +17,7 @@
 # Constants
 readonly CHANGELOG="changelog.txt"
 readonly DATE=$(date +"%Y-%m-%d")
-readonly REPO="https://github.com/Fma965/cloudbox"
+readonly REPO="https://github.com/Fma965/coolflix"
 readonly PREVIOUS_VERSION=$(git describe --abbrev=0 --tags)
 readonly NEXT_VERSION=$(echo $PREVIOUS_VERSION \
   | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{$NF=sprintf("%0*d", length($NF), ($NF+1)); print}')

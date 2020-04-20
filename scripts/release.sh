@@ -4,7 +4,7 @@
 # Variables
 ################################
 
-readonly REPO="fma965/cloudbox"
+readonly REPO="fma965/coolflix"
 readonly TAG=$(git describe --abbrev=0 --tags \
   | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{$NF=sprintf("%0*d", length($NF), ($NF+1)); print}')
 readonly CHANGELOG_SCRIPT="scripts/changelog.sh"

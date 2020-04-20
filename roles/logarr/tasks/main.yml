@@ -31,23 +31,13 @@
     recurse: yes
   with_items:
     - /opt/logarr
-
-- name: Create logarr directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0777
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    recurse: yes
-  with_items:
     - /opt/logarr/config
     - /opt/logarr/config/userdata
-    - /opt/logarr/config/data
 
 - name: "Check if config.json file exists"
   stat:
-    path: "/opt/logarr/config/userdata/config.json"
+    path: "/opt/logarr/config/userdata/config.json
+"
   register: config_env
 
 - name: "Import config file if it doesnt exist"

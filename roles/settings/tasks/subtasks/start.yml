@@ -23,9 +23,9 @@
     name: yyq
   when: (not yyq_binary.stat.exists)
 
-- name: "Start | Get 'cloudbox.yml' info"
+- name: "Start | Get 'coolflix.yml' info"
   stat:
-    path: "{{ playbook_dir }}/cloudbox.yml"
+    path: "{{ playbook_dir }}/coolflix.yml"
   register: coolflix_yml
 
 - name: "Start | Create list of config files"

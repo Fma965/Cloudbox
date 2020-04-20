@@ -16,6 +16,13 @@
 
 - name: Download and unarchive latest traefik-certs-dumper
   unarchive:
-    src: "{{ tcd_download_url.stdout | default('"https://github.com/ldez/traefik-certs-dumper/releases/download/v2.7.0/traefik-certs-dumper_v2.7.0_darwin_amd64.tar.gz"',true) }}"
+    src: "{{ tcd_download_url.stdout | default('https://github.com/ldez/traefik-certs-dumper/releases/download/v2.7.0/traefik-certs-dumper_v2.7.0_linux_amd64.tar.gz',true) }}"
     dest: /usr/local/bin
     remote_src: yes
+
+- name: Create cron job for traefik-certs-dumper
+  cron:
+    name: "Extract Traefik acme.json and run plex_create_pfx.sh"
+    special_time: reboot
+    user: "{{ user.name }}"
+    job: "/usr/local/bin/traefik-certs-dumper file --watch --source=/opt/traefik/data/acme.json --dest=/opt/traefik/certs/ --version=v2 --domain-subdir --post-hook=/opt/scripts/plex/plex_create_pfx.sh"

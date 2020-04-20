@@ -150,11 +150,13 @@
     get_mime: false
   register: application_healthchecks
 
-- name: Adding application_healthchecks.sh file
-  template:
-    src: ../templates/application_healthchecks.sh.j2
-    dest: "/opt/scripts/other/application_healthchecks.sh"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: 0775
-  when: not application_healthchecks.stat.exists
+- name: Extract Organizr API key from /opt/organizr/www/Dashboard/api/config/config.php
+  set_fact:
+    organizr_apikey: "{{ lookup('file', '/opt/organizr/www/Dashboard/api/config/config.php') | regex_findall(\"'organizrAPI' => '(.*?)'\") | first }}"
+
+- name: Create cron job for health checks
+  cron:
+    name: "Send status reports to HealthChecks.io"
+    minute: "*/5"
+    user: "{{ user.name }}"
+    job: "[ ! -f ~/cloudbox/backup.lock ] && sudo bash /opt/scripts/other/application_healthchecks.sh"

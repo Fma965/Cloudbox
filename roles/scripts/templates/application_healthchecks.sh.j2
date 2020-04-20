@@ -8,7 +8,7 @@
 domain='{{ user.domain }}'
 
 # Your Organizr API key to get through Org auth
-orgAPIKey="{{ lookup('file', '/opt/organizr/www/Dashboard/api/config/config.php') | regex_findall(\"'organizrAPI' => '(.*?)'\") | first }}"
+orgAPIKey='{{ organizr_apikey }}'
 
 # Primary Server IP address of the Server all of your applications/containers are hosted on
 # You can add/utilize more Server variables if you would like, as I did below, and if you're running more than one Server like I am

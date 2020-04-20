@@ -52,7 +52,7 @@
     image: "hotio/radarr"
     pull: yes
     published_ports:
-      - "127.0.0.1:7879:7879"
+      - "127.0.0.1:7879:7878"
     env:
       BACKUP: "no"
       PUID: "{{ uid }}"

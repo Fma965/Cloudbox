@@ -52,5 +52,6 @@
       - name: cloudbox
         aliases:
           - mellow
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

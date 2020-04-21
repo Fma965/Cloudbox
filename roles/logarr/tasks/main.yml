@@ -71,5 +71,6 @@
       - name: cloudbox
         aliases:
           - logarr
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

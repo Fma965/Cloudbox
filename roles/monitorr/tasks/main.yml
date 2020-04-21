@@ -63,5 +63,6 @@
       - name: cloudbox
         aliases:
           - monitorr
+    purge_networks: yes
     restart_policy: unless-stopped
     state: started

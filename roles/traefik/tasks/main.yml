@@ -99,5 +99,5 @@
         aliases:
           - traefik
     purge_networks: yes
-    restart_policy: unless-stopped
+    restart_policy: always
     state: started

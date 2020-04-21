@@ -43,6 +43,7 @@
   docker_container:
     name: telegraf
     image: "telegraf"
+    network_mode: host
     pull: yes
     published_ports:
       - "8125:8125"
@@ -62,10 +63,6 @@
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.enable": "false"
-    networks:
-      - name: cloudbox
-        aliases:
-          - telegraf
     purge_networks: yes
     restart_policy: unless-stopped
     state: started

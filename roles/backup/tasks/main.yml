@@ -48,10 +48,7 @@
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
       mode: 0775
-
-  - name: Run '/home/coolflix/scripts/tronitor.sh -p all' to pause all health checks
-    command: "/home/coolflix/scripts/tronitor.sh -p all"
-
+    
   - name: Check if previous backup exists locally
     find:
       paths: "{{ local.destination }}"

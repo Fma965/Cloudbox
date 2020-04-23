@@ -1,12 +1,9 @@
 <?php
 require '/config/www/panel/inc/functions.php';  
-require '/config/www/config.php';
-if ($_GET['token'] != $token) {
-    die("Nope, No Hack Pls!");
-} else {			
-    $query = "SELECT * FROM users ORDER by name;";
-    $sqltran = mysqli_query($con, $query)or die(mysqli_error($con));
-    while ($user = mysqli_fetch_array($sqltran)) {	
+require '/config/www/config.php';			
+$query = "SELECT * FROM users ORDER by name;";
+$sqltran = mysqli_query($con, $query)or die(mysqli_error($con));
+while ($user = mysqli_fetch_array($sqltran)) {	
         $allplanscost = 0;
         $id = mysqli_real_escape_string($con,$user['id']);						
         $query2 = "SELECT * FROM user_plans INNER JOIN plans ON plans.id=user_plans.plan_id WHERE user_id = $id AND NOT quantity = 0;";
@@ -44,7 +41,7 @@ if ($_GET['token'] != $token) {
     $arr['partial']['content'] = "Partially Outstanding CoolFlix Payments";
     $arr['paid']['content'] = "Completed CoolFlix Payments";
     $arr['overpaid']['content'] = "Coolflix Payments In Excess";
-    
+
     if (!empty($arr['notpaid']['embeds'])) {
         $json = json_encode($arr['notpaid']);
         discord_notification($json,$discord_webhook);
@@ -61,6 +58,4 @@ if ($_GET['token'] != $token) {
         $json = json_encode($arr['overpaid']);
         discord_notification($json,$discord_webhook);
     }
-}
-
 ?>

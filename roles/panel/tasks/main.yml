@@ -130,4 +130,4 @@
     hour: "18"
     day: "10"
     user: "{{ user.name }}"
-    job: "curl --silent "http://127.0.0.1:9650/notify.php?token=X20DKTKyt0p4r8sRbhC8cy5hx3XyhrXcv46AjAK1z6MCX6VXdjLUMtlnKPTKt5vf" &>/dev/null"
+    job: "curl --silent http://127.0.0.1:9650/notify.php?token=X20DKTKyt0p4r8sRbhC8cy5hx3XyhrXcv46AjAK1z6MCX6VXdjLUMtlnKPTKt5vf &>/dev/null"

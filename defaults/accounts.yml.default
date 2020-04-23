@@ -26,5 +26,7 @@ starling:
   db_pass:
 tronitor:
   hc_api:
-  discord_hook: 
+  discord_hook:
+discord:
+  fail2ban_webhook: 
 apprise:

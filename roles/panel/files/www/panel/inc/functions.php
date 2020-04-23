@@ -16,6 +16,18 @@
 			return "<span class='paidno'>No</span>";
 		}
 	}
+
+	function HasPaidRaw($paid,$cost) {
+		if($paid > $cost) {
+			return 4;
+		}elseif($paid == $cost) {
+			return 3;
+		}elseif($paid < $cost && $paid > 0 ){
+			return 2;
+		}else{
+			return 1;
+		}
+	}
 	
 	// Formats a 'unix timecode' to a date
 	function formatDate($date) {
@@ -46,5 +58,16 @@
 			}
 		}
 		return $num .'th';
+	}
+
+	function discord_notification($json,$discord_webhook) {
+		$ch = curl_init( $discord_webhook );
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+		curl_setopt( $ch, CURLOPT_POST, 1);
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $json);
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt( $ch, CURLOPT_HEADER, 0);
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+		return curl_exec( $ch );
 	}
 ?>

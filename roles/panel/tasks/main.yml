@@ -124,10 +124,10 @@
   when: not api_config.stat.exists
 
   - name: Monthly notification to Discord
-  cron:
-    name: "Send payment status to discord"
-    minute: "0"
-    hour: "18"
-    day: "10"
-    user: "{{ user.name }}"
-    job: "curl --silent http://127.0.0.1:9650/notify.php?token=X20DKTKyt0p4r8sRbhC8cy5hx3XyhrXcv46AjAK1z6MCX6VXdjLUMtlnKPTKt5vf &>/dev/null"
+    cron:
+      name: "Send payment status to discord"
+      minute: "0"
+      hour: "18"
+      day: "10"
+      user: "{{ user.name }}"
+      job: "curl --silent http://127.0.0.1:9650/notify.php?token=X20DKTKyt0p4r8sRbhC8cy5hx3XyhrXcv46AjAK1z6MCX6VXdjLUMtlnKPTKt5vf &>/dev/null"

@@ -32,6 +32,12 @@ http:
       service: jackettapi@file
       priority: 100
       tls: {}
+    rclonegui:
+      rule: Host(`rclone.{{ user.domain }}`)
+      service: rclonegui@file
+      priority: 100
+      tls: {}
+
       
   services:
     radarrapi:
@@ -58,6 +64,11 @@ http:
       loadBalancer:
         servers:
           - url: http://jackett:9117
+    rclonegui:
+      loadBalancer:
+        servers:
+          - url: http://172.18.0.1:5572
+          
   middlewares:
     api-auth:
       basicAuth:

@@ -35,7 +35,7 @@
 - name: Create and start container
   docker_container:
     name: portainer
-    image: "portainer/portainer"
+    image: "portainer/portainer-ce"
     pull: yes
     published_ports:
       - "127.0.0.1:9000:9000"
@@ -46,6 +46,7 @@
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"
       "traefik.http.routers.portainer.tls": "true"
+      "traefik.http.services.portainer.loadbalancer.server.port": "9000"
     networks:
       - name: cloudbox
         aliases:

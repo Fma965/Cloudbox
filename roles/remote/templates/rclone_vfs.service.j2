@@ -23,8 +23,7 @@ ExecStart=/usr/bin/rclone mount \
   --config=/home/{{ user.name }}/.config/rclone/rclone.conf \
   --allow-other \
   --allow-non-empty \
-  --rc \
-  --rc-addr=localhost:5572 \
+  --rc-web-gui --rc-user=admin --rc-pass={{ user.pass }} --rc-addr=:5572 --rc-web-gui-update --rc-web-gui-no-open-browser \
   --fast-list \
   --drive-skip-gdocs \
   --vfs-read-chunk-size=64M \

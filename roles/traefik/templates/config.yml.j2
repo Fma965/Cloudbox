@@ -32,12 +32,6 @@ http:
       service: jackettapi@file
       priority: 100
       tls: {}
-    rclonegui:
-      rule: Host(`rclone.{{ user.domain }}`)
-      service: rclonegui@file
-      priority: 100
-      tls: {}
-
       
   services:
     radarrapi:
@@ -64,24 +58,19 @@ http:
       loadBalancer:
         servers:
           - url: http://jackett:9117
-    rclonegui:
-      loadBalancer:
-        servers:
-          - url: http://172.18.0.1:5572
-          
   middlewares:
     api-auth:
       basicAuth:
         usersFile: "/etc/traefik/htpasswd"
     oauth-owner:
       forwardAuth:
-        address: https://{{ user.domain }}/api/?v1/auth&group=0
+        address: https://{{ user.domain }}/api/v2/auth?group=0
     oauth-coadmin:
       forwardAuth:
-        address: https://{{ user.domain }}/api/?v1/auth&group=1
+        address: https://{{ user.domain }}/api/v2/auth?group=1
     oauth-poweruser:
       forwardAuth:
-        address: https://{{ user.domain }}/api/?v1/auth&group=2
+        address: https://{{ user.domain }}/api/v2/auth?group=2
     oauth-user:
       forwardAuth:
-        address: https://{{ user.domain }}/api/?v1/auth&group=3
+        address: https://{{ user.domain }}/api/v2/auth?group=3

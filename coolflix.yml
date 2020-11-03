@@ -56,7 +56,7 @@
     - { role: grafana, tags: ['grafana'] }
     - { role: influxdb, tags: ['influxdb'] }
     - { role: telegraf, tags: ['telegraf'] }
-    - { role: mellow, tags: ['mellow', 'coolflix'] }
+#    - { role: mellow, tags: ['mellow', 'coolflix'] }
     - { role: monitorr, tags: ['monitorr', 'coolflix'] }
     - { role: qbittorrentvpn, tags: ['qbittorrentvpn', 'coolflix'] }
     - { role: radarr4k, tags: ['radarr4k', 'coolflix'] }
@@ -72,3 +72,5 @@
 #    - { role: bazarr, tags: ['bazarr'] }
 
     - { role: testing, tags: ['testing', 'test'] }
+    - { role: requestrr, tags: ['requestrr', 'coolflix'] }
+    

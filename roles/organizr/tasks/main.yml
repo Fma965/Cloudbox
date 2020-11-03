@@ -24,15 +24,6 @@
     name: organizr
     state: absent
 
-- name: Remove certain js files from organizr
-  file:
-    path: "/opt/organizr/www/Dashboard/js/{{ item }}"
-    state: absent
-  with_items:
-    - "custom.min.js"
-    - "functions.js"
-  ignore_errors: yes
-
 - name: Create Organizr directories
   file: 
     path: "{{ item }}"
@@ -47,15 +38,17 @@
 - name: Create and start container
   docker_container:
     name: organizr
-    image: "organizrtools/organizr-v2:plex"
+    image: "organizr/organizr"
     pull: yes
     published_ports:
       - "127.0.0.1:7421:80"
     env:
+      fpm: true
+      branch: "v2-master"
       PUID: "{{ uid }}"
       PGID: "{{ gid }}"
+      TZ: "{{ tz }}"
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
       - "/opt/organizr:/config"
     labels:
       "com.github.cloudbox.cloudbox_managed": "true"

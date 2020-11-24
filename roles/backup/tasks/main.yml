@@ -157,6 +157,8 @@
       - "/opt/crontab-backup"
 
   # Stop Containers
+  - name: "Pause Health Checks"
+    command: /opt/scripts/other/tronitor.sh -p all
 
   - name: "Gather list of running Docker containers"
     shell: "docker ps --format '{{ '{{' }} .Names{{ '}}' }}' --filter label=com.github.cloudbox.cloudbox_managed=true | xargs echo -n"

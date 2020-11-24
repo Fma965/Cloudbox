@@ -44,3 +44,5 @@
 ./sonarr4k/app/logs/*
 
 ./traefik/logs/*
+
+./influx/*

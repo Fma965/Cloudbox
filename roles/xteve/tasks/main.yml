@@ -1,0 +1,59 @@
+#########################################################################
+# Title:            CoolFlix: Xteve Role                                #
+# Author(s):        Fma965                                              #
+# URL:              https://github.com/cloudbox/cloudbox                #
+# Docker Image(s):  dnsforge/xteve:latest                               #
+# --                                                                    #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: "Set DNS Record on CloudFlare"
+  include_role:
+    name: cloudflare-dns
+  vars:
+    subdomain: xteve
+  when: cloudflare_enabled
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: xteve
+    state: absent
+
+- name: Create xteve directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    recurse: yes
+  with_items:
+    - /opt/xteve
+
+- name: Create and start container
+  docker_container:
+    name: xteve
+    image: "dnsforge/xteve:latest"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:34400:34400"
+    env:
+      PUID: "{{ uid }}"
+      PGID: "{{ gid }}"
+      UMASK: 002
+      TZ: "{{ tz }}"
+    volumes:
+      - "/opt/xteve:/home/xteve/conf"
+    labels:
+      "com.github.cloudbox.cloudbox_managed": "true"
+      "traefik.http.routers.xteve.tls": "true"
+      "traefik.http.routers.xteve.middlewares": "oauth-poweruser@file"
+      "traefik.http.services.xteve.loadbalancer.server.port": "34400"
+    networks:
+      - name: cloudbox
+        aliases:
+          - xteve
+    purge_networks: yes
+    restart_policy: unless-stopped
+    state: started

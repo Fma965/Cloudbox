@@ -80,6 +80,7 @@
       - "/mnt:/mnt"
       - "/tmp:/tmp"
       - "/dev/shm:/dev/shm"
+      - "/opt/xteve:/tmp/xteve:ro"
       - "{{ plex.transcodes }}/plex:/transcode"
     devices: "{{ '/dev/dri:/dev/dri' if (gpu.intel and dev_dri.stat.exists) | default(false) else omit }}"
     etc_hosts:

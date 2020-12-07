@@ -71,6 +71,7 @@
       PGID: "{{ gid }}"
       UMASK_SET: "002"
       VPN_ENABLED: "yes"
+      VPN_CLIENT: "wireguard"
       VPN_USER: "{{ pia.user }}"
       VPN_PASS: "{{ pia.pass }}"
       VPN_PROV: "pia"

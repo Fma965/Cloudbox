@@ -66,6 +66,7 @@
     - { role: logarr, tags: ['logarr', 'coolflix'] }
     - { role: traefik-certs-dumper, tags: ['traefik-certs-dumper', 'coolflix'] }
     - { role: kitana, tags: ['kitana', 'coolflix'] }
+    - { role: xteve, tags: ['xteve', 'coolflix'] }
     # --- Disabled roles from stock Cloudbox install ---
 #    - { role: plex_patrol, tags: ['plex_patrol'] }
 #    - { role: nowshowing, tags: ['nowshowing'] }
